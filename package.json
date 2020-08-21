@@ -1,0 +1,14 @@
+{
+  "name": "jmespath-expanded.js",
+  "version": "1.0.0",
+  "main": "lib/index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "benchmark": "^2.1.4",
+    "mocha": "^8.1.1",
+    "typescript": "^4.0.2"
+  },
+  "scripts": {
+    "test": "mocha test/"
+  }
+}

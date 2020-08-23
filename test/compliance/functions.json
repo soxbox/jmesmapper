@@ -1464,5 +1464,64 @@
                 "error": "invalid-type"
             }
         ]
+    },
+    {
+        "given": {
+            "string": "1,2,3,4,5",
+            "number": 1,
+            "notAValue": null
+        },
+        "cases": [
+            {
+                "expression": "split(string,',')",
+                "result": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                ]
+            },
+            {
+                "expression": "split(number, ',')",
+                "error": "invalid-type"
+            },
+            {
+                "expression": "split(string, number)",
+                "error": "invalid-type"
+            }
+        ]
+    },
+    {
+        "given": {
+            "string": "TEST",
+            "number": 1
+        },
+        "cases": [
+            {
+                "expression": "lower(string)",
+                "result": "test"
+            },
+            {
+                "expression": "lower(number)",
+                "error": "invalid-type"
+            }
+        ]
+    },
+    {
+        "given": {
+            "string": "test",
+            "number": 1
+        },
+        "cases": [
+            {
+                "expression": "upper(string)",
+                "result": "TEST"
+            },
+            {
+                "expression": "upper(number)",
+                "error": "invalid-type"
+            }
+        ]
     }
 ]

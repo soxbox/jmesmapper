@@ -2,7 +2,7 @@
 import { TreeInterpreter } from './tree-interpreter';
 import * as constants from './constants';
 import * as helpers from './helpers';
-import { IAst, TokenType  } from './types';
+import { IAst, TokenType } from './types';
 
 interface IFunctionSignature {
   types: number[];
@@ -141,6 +141,14 @@ export class Runtime {
         _func: this._functionTrim,
         _signature: [{ types: [constants.TYPE_STRING] }],
       },
+      upper: {
+        _func: this._functionUpper,
+        _signature: [{ types: [constants.TYPE_STRING] }],
+      },
+      lower: {
+        _func: this._functionLower,
+        _signature: [{ types: [constants.TYPE_STRING] }],
+      },
       keys: {
         _func: this._functionKeys,
         _signature: [{ types: [constants.TYPE_OBJECT] }],
@@ -160,6 +168,13 @@ export class Runtime {
         _signature: [
           { types: [constants.TYPE_ARRAY] },
           { types: [constants.TYPE_EXPREF] },
+        ],
+      },
+      split: {
+        _func: this._functionSplit,
+        _signature: [
+          { types: [constants.TYPE_STRING] },
+          { types: [constants.TYPE_STRING] },
         ],
       },
       group_by: {
@@ -415,6 +430,14 @@ export class Runtime {
     }
   }
 
+  _functionLower(resolvedArgs: any[]): string {
+    return resolvedArgs[0].toLowerCase();
+  }
+
+  _functionUpper(resolvedArgs: any[]): string {
+    return resolvedArgs[0].toUpperCase();
+  }
+
   _functionMap(resolvedArgs: any[]): any[] {
     const mapped = [];
     const interpreter = this.getInterpreter();
@@ -545,6 +568,10 @@ export class Runtime {
     return resolvedArgs[0].trim();
   }
 
+  _functionSplit(resolvedArgs: any[]): number | null {
+    return resolvedArgs[0].split(resolvedArgs[1]);
+  }
+
   _functionToNumber(resolvedArgs: any[]): number | null {
     const typeName = this._getTypeName(resolvedArgs[0]);
     let convertedValue;
@@ -655,14 +682,17 @@ export class Runtime {
       throw new Error('TypeError');
     }
 
-    return items.reduce((out: {[key: string]: any}, item: {[key: string]: any}) => {
-      const value = interpreter.visit(exprefNode, item);
-      if (!Object.prototype.hasOwnProperty.call(out, value)) {
-        out[value] = [];
-      }
-      out[value].push(item);
-      return out;
-    }, {});
+    return items.reduce(
+      (out: { [key: string]: any }, item: { [key: string]: any }) => {
+        const value = interpreter.visit(exprefNode, item);
+        if (!Object.prototype.hasOwnProperty.call(out, value)) {
+          out[value] = [];
+        }
+        out[value].push(item);
+        return out;
+      },
+      {}
+    );
   }
 
   _functionMaxBy(resolvedArgs: any[]): any {
@@ -708,7 +738,9 @@ export class Runtime {
     var exprefNode = resolvedArgs[1];
     var interpreter = this.getInterpreter();
     if (exprefNode.jmespathType !== 'Expref') {
-      throw new Error('TypeError: expected ExpreRef, received ' + exprefNode.type);
+      throw new Error(
+        'TypeError: expected ExpreRef, received ' + exprefNode.type
+      );
     }
     interpreter.scopeChain.pushScope(scope);
     try {

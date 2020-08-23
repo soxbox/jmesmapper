@@ -1443,5 +1443,26 @@
                 "error": "invalid-type"
             }
         ]
+    },
+    {
+        "given": {
+            "string": " test ",
+            "number": 1,
+            "notAValue": null
+        },
+        "cases": [
+            {
+                "expression": "trim(string)",
+                "result": "test"
+            },
+            {
+                "expression": "group_by(number, a)",
+                "error": "invalid-type"
+            },
+            {
+                "expression": "group_by(notAValue, a)",
+                "error": "invalid-type"
+            }
+        ]
     }
 ]

@@ -137,6 +137,10 @@ export class Runtime {
         _func: this._functionType,
         _signature: [{ types: [constants.TYPE_ANY] }],
       },
+      trim: {
+        _func: this._functionTrim,
+        _signature: [{ types: [constants.TYPE_STRING] }],
+      },
       keys: {
         _func: this._functionKeys,
         _signature: [{ types: [constants.TYPE_OBJECT] }],
@@ -535,6 +539,10 @@ export class Runtime {
     } else {
       return JSON.stringify(resolvedArgs[0]);
     }
+  }
+
+  _functionTrim(resolvedArgs: any[]): number | null {
+    return resolvedArgs[0].trim();
   }
 
   _functionToNumber(resolvedArgs: any[]): number | null {

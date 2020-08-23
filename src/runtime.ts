@@ -444,7 +444,12 @@ export class Runtime {
     const exprefNode = resolvedArgs[0];
     const elements = resolvedArgs[1];
     for (let i = 0; i < elements.length; i++) {
-      mapped.push(interpreter.visit(exprefNode, elements[i]));
+      try {
+        interpreter.scopeChain.pushScope({index: i});
+        mapped.push(interpreter.visit(exprefNode, elements[i]));
+      } finally {
+        interpreter.scopeChain.popScope();
+      }
     }
     return mapped;
   }

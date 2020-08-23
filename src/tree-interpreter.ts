@@ -164,6 +164,9 @@ export class TreeInterpreter {
         }
         return result;
       }
+      case AstTypes.REGULAREXPRESSION: {
+        return node.value;
+      }
       case AstTypes.FLATTEN: {
         const original = this.visit(node.children[0], value);
         if (!helpers.isArray(original)) {

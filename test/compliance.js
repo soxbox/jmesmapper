@@ -47,6 +47,18 @@ function addTestSuitesFromFile(filename) {
                 )
               })
             })(testcase, given)
+          } else if(testcase.type !== undefined) {
+            ;(function(testcase, given) {
+              it(
+                'should pass test ' + j + ' type: ' + testcase.type,
+                function() {
+                  assert.deepEqual(
+                    Object.prototype.toString.call(search(given, testcase.expression)),
+                    testcase.type
+                  )
+                }
+              )
+            })(testcase, given)
           } else {
             ;(function(testcase, given) {
               it(

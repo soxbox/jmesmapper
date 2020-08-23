@@ -1481,7 +1481,7 @@
     },
     {
         "given": {
-            "string": "1,2,3,4,5",
+            "string": "1,2,3,4 5",
             "number": 1,
             "notAValue": null
         },
@@ -1492,8 +1492,7 @@
                     1,
                     2,
                     3,
-                    4,
-                    5
+                    "4 5"
                 ]
             },
             {
@@ -1503,8 +1502,18 @@
             {
                 "expression": "split(string, number)",
                 "error": "invalid-type"
-            }
-        ]
+            },
+            {
+              "expression": "split(string, /,|\\s/g)",
+              "result": [
+                1,
+                2,
+                3,
+                4,
+                5
+            ]
+           }
+      ]
     },
     {
         "given": {
@@ -1535,6 +1544,30 @@
             {
                 "expression": "upper(number)",
                 "error": "invalid-type"
+            }
+        ]
+    },
+    {
+        "given": {
+            "string": "Hi Bob",
+            "string2": "Hi Bob/cat"
+        },
+        "cases": [
+            {
+                "expression": "replace(string, 'Bob', 'John')",
+                "result": "Hi John"
+            },
+            {
+                "expression": "replace(string, /bob/i, 'John')",
+                "result": "Hi John"
+            },
+            {
+                "expression": "replace(string, /bob/i, 'John')",
+                "result": "Hi John"
+            },
+            {
+                "expression": "replace(string2, /bob\\//i, 'John')",
+                "result": "Hi Johncat"
             }
         ]
     }

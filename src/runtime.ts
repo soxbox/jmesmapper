@@ -149,6 +149,14 @@ export class Runtime {
         _func: this._functionLower,
         _signature: [{ types: [constants.TYPE_STRING] }],
       },
+      replace: {
+        _func: this._functionReplace,
+        _signature: [
+          { types: [constants.TYPE_STRING] },
+          { types: [constants.TYPE_STRING, constants.TYPE_REGEXP] },
+          { types: [constants.TYPE_STRING] },
+        ],
+      },
       keys: {
         _func: this._functionKeys,
         _signature: [{ types: [constants.TYPE_OBJECT] }],
@@ -174,7 +182,7 @@ export class Runtime {
         _func: this._functionSplit,
         _signature: [
           { types: [constants.TYPE_STRING] },
-          { types: [constants.TYPE_STRING] },
+          { types: [constants.TYPE_STRING,constants.TYPE_REGEXP] },
         ],
       },
       group_by: {
@@ -358,6 +366,8 @@ export class Runtime {
         return constants.TYPE_BOOLEAN;
       case '[object Null]':
         return constants.TYPE_NULL;
+      case '[object RegExp]':
+        return constants.TYPE_REGEXP;
       case '[object Object]':
         // Check if it's an expref.  If it has, it's been
         // tagged with a jmespathType attr of 'Expref';
@@ -368,7 +378,7 @@ export class Runtime {
         }
     }
   }
-
+  // String Functions
   _functionStartsWith(resolvedArgs: any[]): boolean {
     return resolvedArgs[0].lastIndexOf(resolvedArgs[1]) === 0;
   }
@@ -377,6 +387,26 @@ export class Runtime {
     const searchStr = resolvedArgs[0];
     const suffix = resolvedArgs[1];
     return searchStr.indexOf(suffix, searchStr.length - suffix.length) !== -1;
+  }
+
+  _functionLower(resolvedArgs: any[]): string {
+    return resolvedArgs[0].toLowerCase();
+  }
+
+  _functionUpper(resolvedArgs: any[]): string {
+    return resolvedArgs[0].toUpperCase();
+  }
+
+  _functionTrim(resolvedArgs: any[]): number | null {
+    return resolvedArgs[0].trim();
+  }
+
+  _functionSplit(resolvedArgs: any[]): number | null {
+    return resolvedArgs[0].split(resolvedArgs[1]);
+  }
+
+  _functionReplace(resolvedArgs: any[]): string {
+    return resolvedArgs[0].replace(resolvedArgs[1], resolvedArgs[2]);
   }
 
   _functionReverse(resolvedArgs: any[]): any[] | string {
@@ -430,14 +460,6 @@ export class Runtime {
     }
   }
 
-  _functionLower(resolvedArgs: any[]): string {
-    return resolvedArgs[0].toLowerCase();
-  }
-
-  _functionUpper(resolvedArgs: any[]): string {
-    return resolvedArgs[0].toUpperCase();
-  }
-
   _functionMap(resolvedArgs: any[]): any[] {
     const mapped = [];
     const interpreter = this.getInterpreter();
@@ -445,7 +467,7 @@ export class Runtime {
     const elements = resolvedArgs[1];
     for (let i = 0; i < elements.length; i++) {
       try {
-        interpreter.scopeChain.pushScope({index: i});
+        interpreter.scopeChain.pushScope({ index: i });
         mapped.push(interpreter.visit(exprefNode, elements[i]));
       } finally {
         interpreter.scopeChain.popScope();
@@ -567,14 +589,6 @@ export class Runtime {
     } else {
       return JSON.stringify(resolvedArgs[0]);
     }
-  }
-
-  _functionTrim(resolvedArgs: any[]): number | null {
-    return resolvedArgs[0].trim();
-  }
-
-  _functionSplit(resolvedArgs: any[]): number | null {
-    return resolvedArgs[0].split(resolvedArgs[1]);
   }
 
   _functionToNumber(resolvedArgs: any[]): number | null {

@@ -68,6 +68,11 @@ export class Parser {
       case TokenType.SCOPE: {
         return { type: AstTypes.SCOPE, name: token.value };
       }
+      case TokenType.REGULAREXPRESSION:
+        return {
+          type: AstTypes.REGULAREXPRESSION,
+          value: new RegExp(token.value.expression, token.value.flags),
+        };
       case TokenType.QUOTEDIDENTIFIER:
         if (this._lookahead(0) === TokenType.LPAREN) {
           throw new Error('Quoted identifier not allowed for function names.');

@@ -31,6 +31,8 @@ export class Lexer {
       } else if (helpers.isNum(stream[this._current])) {
         token = this._consumeNumber(stream);
         tokens.push(token);
+      } else if (stream[this._current] === '/') {
+        tokens.push(this._consumeForwardSlash(stream));
       } else if (stream[this._current] === '$') {
         tokens.push(this._consumeScope(stream));
       } else if (stream[this._current] === '[') {
@@ -109,6 +111,35 @@ export class Lexer {
       this._current++;
     }
     return stream.slice(start, this._current);
+  }
+  
+  private _consumeForwardSlash(stream: string): IToken {
+    const start = this._current;
+    const maxLength = stream.length;
+    this._current++;
+    let expression = '';
+    let flags;
+    console.log(stream)
+    while (stream[this._current] !== '/' && this._current < maxLength) {
+      expression += stream[this._current];
+      if (stream[this._current] === '\\' && stream[this._current + 1] === '/') {
+        this._current++;
+        expression += stream[this._current];
+      }
+      this._current++;
+    }
+    this._current++;
+    if (helpers.isAlpha(stream[this._current])) {
+      flags = this._consumeUnquotedIdentifier(stream);
+    }
+    return {
+      start,
+      type: TokenType.REGULAREXPRESSION,
+      value: {
+        expression,
+        flags
+      }
+    }
   }
 
   private _consumeScope(stream: string): IToken {

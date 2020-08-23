@@ -8,6 +8,7 @@ export enum TokenType {
   EOF = 'EOF',
   UNQUOTEDIDENTIFIER = 'UnquotedIdentifier',
   QUOTEDIDENTIFIER = 'QuotedIdentifier',
+  REGULAREXPRESSION = "RegularExpression",
   RBRACKET = 'Rbracket',
   RPAREN = 'Rparen',
   COMMA = 'Comma',
@@ -61,6 +62,7 @@ export enum AstTypes {
   FLATTEN = 'Flatten',
   PIPE = 'Pipe',
   SCOPE = 'Scope',
+  REGULAREXPRESSION = "RegularExpression",
 }
 
 export type KeyValuePairType = {
@@ -116,7 +118,7 @@ export type IAst =
       context?: any;
     }
   | {
-      type: AstTypes.LITERAL | AstTypes.INDEX;
+      type: AstTypes.LITERAL | AstTypes.INDEX | AstTypes.REGULAREXPRESSION;
       value: any;
       jmespathType?: TokenType.EXPREF;
       context?: any;

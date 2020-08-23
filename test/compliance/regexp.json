@@ -1,0 +1,26 @@
+[
+    {
+        "given": {
+            "foo": [{"name": "a"}, {"name": "b"}],
+            "bar": {"baz": "qux"}
+        },
+        "cases": [
+            {
+                "expression": "/test/",
+                "type": "[object RegExp]"
+            },
+            {
+                "expression": "/test/i",
+                "type": "[object RegExp]"
+            },
+            {
+                "expression": "/test/igm",
+                "type": "[object RegExp]"
+            },
+            {
+                "expression": "/[A-Z\\xC0-\\xD6\\xD8-\\xDE]?[a-z\\xDF-\\xF6\\xF8-\\xFF]+|[A-Z\\xC0-\\xD6\\xD8-\\xDE]+(?![a-z\\xDF-\\xF6\\xF8-\\xFF])|\\d+/g",
+                "type": "[object RegExp]"
+            }
+        ]
+    }
+]

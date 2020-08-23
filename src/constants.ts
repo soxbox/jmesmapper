@@ -23,6 +23,7 @@ export const TYPE_EXPREF = 6;
 export const TYPE_NULL = 7;
 export const TYPE_ARRAY_NUMBER = 8;
 export const TYPE_ARRAY_STRING = 9;
+export const TYPE_REGEXP = 10;
 export const TYPE_NAME_TABLE: IStringObject = {
   0: 'number',
   1: 'any',
@@ -34,6 +35,7 @@ export const TYPE_NAME_TABLE: IStringObject = {
   7: 'null',
   8: 'Array<number>',
   9: 'Array<string>',
+  10: 'regexp',
 };
 
 // The "&", "[", "<", ">" tokens

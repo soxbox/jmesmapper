@@ -1,13 +1,16 @@
 /* eslint-disable no-case-declarations */
 import { Runtime } from './runtime';
+import {ScopeChain} from "./scope-chain";
 import * as helpers from './helpers';
 import { IAst, AstTypes, TokenType } from './types';
 
 export class TreeInterpreter {
   runtime: Runtime;
+  scopeChain: ScopeChain;
 
   constructor(runtime: Runtime) {
     this.runtime = runtime;
+    this.scopeChain = new ScopeChain();
   }
 
   search(node: IAst, value: any) {
@@ -219,6 +222,8 @@ export class TreeInterpreter {
         const first = this.visit(node.children[0], value);
         return helpers.isFalse(first);
       }
+      case AstTypes.SCOPE:
+        return this.scopeChain.resolveReference(node.name);
       case AstTypes.LITERAL:
         return node.value;
       case AstTypes.PIPE: {
@@ -240,6 +245,7 @@ export class TreeInterpreter {
         // checker verify the type.
         if (refNode) {
           refNode.jmespathType = TokenType.EXPREF;
+          refNode.context = value;
         }
         return refNode;
       }

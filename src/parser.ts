@@ -65,6 +65,9 @@ export class Parser {
         return { type: AstTypes.LITERAL, value: token.value };
       case TokenType.UNQUOTEDIDENTIFIER:
         return { type: AstTypes.FIELD, name: token.value };
+      case TokenType.SCOPE: {
+        return { type: AstTypes.SCOPE, name: token.value };
+      }
       case TokenType.QUOTEDIDENTIFIER:
         if (this._lookahead(0) === TokenType.LPAREN) {
           throw new Error('Quoted identifier not allowed for function names.');
@@ -336,6 +339,7 @@ export class Parser {
     const exprTokens: string[] = [
       TokenType.UNQUOTEDIDENTIFIER,
       TokenType.QUOTEDIDENTIFIER,
+      TokenType.SCOPE,
       TokenType.STAR,
     ];
     if (exprTokens.indexOf(lookahead) >= 0) {

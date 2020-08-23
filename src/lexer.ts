@@ -31,6 +31,8 @@ export class Lexer {
       } else if (helpers.isNum(stream[this._current])) {
         token = this._consumeNumber(stream);
         tokens.push(token);
+      } else if (stream[this._current] === '$') {
+        tokens.push(this._consumeScope(stream));
       } else if (stream[this._current] === '[') {
         // No need to increment this._current.  This happens
         // in _consumeLBracket
@@ -107,6 +109,22 @@ export class Lexer {
       this._current++;
     }
     return stream.slice(start, this._current);
+  }
+
+  private _consumeScope(stream: string): IToken {
+    const start = this._current;
+    this._current++;
+    let value;
+    if (helpers.isAlpha(stream[this._current])) {
+      value = this._consumeUnquotedIdentifier(stream);
+    } else if (stream[this._current] === '"') {
+      value = this._consumeQuotedIdentifier(stream);
+    } else {
+      const error = new Error('Unknown character:' + stream[this._current]);
+      error.name = 'LexerError';
+      throw error;
+    }
+    return { type: TokenType.SCOPE, value, start };
   }
 
   private _consumeQuotedIdentifier(stream: string): string {

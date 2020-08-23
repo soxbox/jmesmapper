@@ -72,6 +72,7 @@ export const bindingPower: INumberObject = {
   [TokenType.EOF]: 0,
   [TokenType.UNQUOTEDIDENTIFIER]: 0,
   [TokenType.QUOTEDIDENTIFIER]: 0,
+  [TokenType.SCOPE]: 0,
   [TokenType.RBRACKET]: 0,
   [TokenType.RPAREN]: 0,
   [TokenType.COMMA]: 0,

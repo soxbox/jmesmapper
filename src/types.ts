@@ -4,13 +4,6 @@ export interface IToken {
   start: number;
 }
 
-// export interface IAst {
-//   type: string
-//   name: string
-//   value?: any
-//   children?: Array<IAst | undefined | null>
-// }
-
 export enum TokenType {
   EOF = 'EOF',
   UNQUOTEDIDENTIFIER = 'UnquotedIdentifier',
@@ -41,6 +34,7 @@ export enum TokenType {
   LBRACKET = 'Lbracket',
   LPAREN = 'Lparen',
   LITERAL = 'Literal',
+  SCOPE = 'Scope',
 }
 
 export enum AstTypes {
@@ -66,26 +60,30 @@ export enum AstTypes {
   KEY_VALUE_PAIR = 'KeyValuePair',
   FLATTEN = 'Flatten',
   PIPE = 'Pipe',
+  SCOPE = 'Scope',
 }
 
 export type KeyValuePairType = {
   type: AstTypes.KEY_VALUE_PAIR;
   name: string;
   value: any;
-  jmespathType?: TokenType.EXPREF
-}
+  jmespathType?: TokenType.EXPREF;
+  context?: any;
+};
 
 export type IAst =
   | {
-      type: AstTypes.FIELD;
+      type: AstTypes.FIELD | AstTypes.SCOPE;
       name: string;
-      jmespathType?: TokenType.EXPREF
+      jmespathType?: TokenType.EXPREF;
+      context?: any;
     }
   | {
       type: AstTypes.FUNCTION | AstTypes.COMPARATOR;
       name: string;
       children: Array<IAst | undefined | null>;
-      jmespathType?: TokenType.EXPREF
+      jmespathType?: TokenType.EXPREF;
+      context?: any;
     }
   | {
       type:
@@ -102,25 +100,30 @@ export type IAst =
         | AstTypes.FLATTEN
         | AstTypes.PIPE;
       children: Array<IAst | undefined | null>;
-      jmespathType?: TokenType.EXPREF
+      jmespathType?: TokenType.EXPREF;
+      context?: any;
     }
-    | {
+  | {
       type: AstTypes.MULTI_SELECT_HASH;
       children: KeyValuePairType[];
-      jmespathType?: TokenType.EXPREF
+      jmespathType?: TokenType.EXPREF;
+      context?: any;
     }
-    | {
+  | {
       type: AstTypes.SLICE;
       children: Array<number | null>;
-      jmespathType?: TokenType.EXPREF
+      jmespathType?: TokenType.EXPREF;
+      context?: any;
     }
-    | {
+  | {
       type: AstTypes.LITERAL | AstTypes.INDEX;
       value: any;
-      jmespathType?: TokenType.EXPREF
+      jmespathType?: TokenType.EXPREF;
+      context?: any;
     }
   | {
       type: AstTypes.IDENTITY | AstTypes.CURRENT;
-      jmespathType?: TokenType.EXPREF
+      jmespathType?: TokenType.EXPREF;
+      context?: any;
     }
   | KeyValuePairType;

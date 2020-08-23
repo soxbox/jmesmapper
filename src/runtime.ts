@@ -2,7 +2,7 @@
 import { TreeInterpreter } from './tree-interpreter';
 import * as constants from './constants';
 import * as helpers from './helpers';
-import { IAst, TokenType } from './types';
+import { IAst, TokenType  } from './types';
 
 interface IFunctionSignature {
   types: number[];
@@ -65,6 +65,13 @@ export class Runtime {
       floor: {
         _func: this._functionFloor,
         _signature: [{ types: [constants.TYPE_NUMBER] }],
+      },
+      let: {
+        _func: this.functionLet,
+        _signature: [
+          { types: [constants.TYPE_OBJECT] },
+          { types: [constants.TYPE_EXPREF] },
+        ],
       },
       length: {
         _func: this._functionLength,
@@ -654,13 +661,27 @@ export class Runtime {
     return minRecord;
   }
 
-  createKeyFunction(exprefNode: IAst, allowedTypes: number[]) {
+  functionLet(resolvedArgs: IAst[]) {
+    var scope = resolvedArgs[0];
+    var exprefNode = resolvedArgs[1];
+    var interpreter = this.getInterpreter();
+    if (exprefNode.jmespathType !== 'Expref') {
+      throw new Error('TypeError: expected ExpreRef, received ' + exprefNode.type);
+    }
+    interpreter.scopeChain.pushScope(scope);
+    try {
+      return interpreter.visit(exprefNode, exprefNode.context);
+    } finally {
+      interpreter.scopeChain.popScope();
+    }
+  }
+
+  createKeyFunction(exprefNode: IAst, allowedTypes: Array<number | undefined>) {
     const that = this;
     const interpreter = this.getInterpreter();
     const keyFunc = function (x: any) {
       const current = interpreter.visit(exprefNode, x);
       const type = that._getTypeName(current);
-      // @ts-ignore
       if (allowedTypes.indexOf(type) < 0) {
         const msg =
           'TypeError: expected one of ' + allowedTypes + ', received ' + type;

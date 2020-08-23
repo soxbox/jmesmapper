@@ -158,6 +158,13 @@ export class Runtime {
           { types: [constants.TYPE_EXPREF] },
         ],
       },
+      group_by: {
+        _func: this._functionGroupBy,
+        _signature: [
+          { types: [constants.TYPE_ARRAY] },
+          { types: [constants.TYPE_EXPREF] },
+        ],
+      },
       join: {
         _func: this._functionJoin,
         _signature: [
@@ -621,6 +628,33 @@ export class Runtime {
       sortedArray[j] = decorated[j][1];
     }
     return sortedArray;
+  }
+
+  _functionGroupBy(resolvedArgs: any[]): any {
+    const items = resolvedArgs[0].slice(0);
+    if (items.length === 0) {
+      return items;
+    }
+    const interpreter = this.getInterpreter();
+    const exprefNode = resolvedArgs[1];
+    const requiredType = this._getTypeName(
+      interpreter.visit(exprefNode, items[0])
+    );
+    if (
+      // @ts-ignore
+      [constants.TYPE_NUMBER, constants.TYPE_STRING].indexOf(requiredType) < 0
+    ) {
+      throw new Error('TypeError');
+    }
+
+    return items.reduce((out: {[key: string]: any}, item: {[key: string]: any}) => {
+      const value = interpreter.visit(exprefNode, item);
+      if (!Object.prototype.hasOwnProperty.call(out, value)) {
+        out[value] = [];
+      }
+      out[value].push(item);
+      return out;
+    }, {});
   }
 
   _functionMaxBy(resolvedArgs: any[]): any {

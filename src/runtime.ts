@@ -7,6 +7,7 @@ import { IAst, TokenType } from './types';
 interface IFunctionSignature {
   types: number[];
   variadic?: boolean;
+  optional?: boolean;
 }
 
 interface IFunctionTableType {
@@ -102,6 +103,23 @@ export class Runtime {
         _func: this._functionMerge,
         _signature: [{ types: [constants.TYPE_OBJECT], variadic: true }],
       },
+      case: {
+        _func: this._functionCase,
+        _signature: [
+          {
+            types: [constants.TYPE_EXPREF, constants.TYPE_ARRAY_EXPREF],
+            variadic: true,
+          },
+        ],
+      },
+      if: {
+        _func: this._functionIf,
+        _signature: [
+          {types: [constants.TYPE_ANY]},
+          {types: [constants.TYPE_EXPREF]},
+          {types: [constants.TYPE_EXPREF], optional: true}
+        ]
+      },
       max_by: {
         _func: this._functionMaxBy,
         _signature: [
@@ -182,7 +200,7 @@ export class Runtime {
         _func: this._functionSplit,
         _signature: [
           { types: [constants.TYPE_STRING] },
-          { types: [constants.TYPE_STRING,constants.TYPE_REGEXP] },
+          { types: [constants.TYPE_STRING, constants.TYPE_REGEXP] },
         ],
       },
       group_by: {
@@ -263,6 +281,20 @@ export class Runtime {
             args.length
         );
       }
+    } else if (signature[signature.length - 1].optional) {
+      if (args.length < signature.length - 1) {
+        pluralized = signature.length === 1 ? ' argument' : ' arguments';
+        throw new Error(
+          'ArgumentError: ' +
+            name +
+            '() ' +
+            'takes at least' +
+            (signature.length - 1) +
+            pluralized +
+            ' but received ' +
+            args.length
+        );
+      }
     } else if (args.length !== signature.length) {
       pluralized = signature.length === 1 ? ' argument' : ' arguments';
       throw new Error(
@@ -284,6 +316,12 @@ export class Runtime {
         if (this._typeMatches(actualType, currentSpec[j], args[i])) {
           typeMatched = true;
           break;
+        }
+      }
+      // supports one optional type at the end of the arguments
+      if (typeMatched == false && signature[i].optional && i === (signature.length - 1)) {
+        if (signature.length > args.length) {
+          typeMatched = true;
         }
       }
       if (!typeMatched) {
@@ -320,6 +358,7 @@ export class Runtime {
     if (
       expected === constants.TYPE_ARRAY_STRING ||
       expected === constants.TYPE_ARRAY_NUMBER ||
+      expected === constants.TYPE_ARRAY_EXPREF ||
       expected === constants.TYPE_ARRAY
     ) {
       // The expected type can either just be array,
@@ -336,6 +375,8 @@ export class Runtime {
           subtype = constants.TYPE_NUMBER;
         } else if (expected === constants.TYPE_ARRAY_STRING) {
           subtype = constants.TYPE_STRING;
+        } else if (expected === constants.TYPE_ARRAY_EXPREF) {
+          subtype = constants.TYPE_EXPREF;
         }
         for (let i = 0; i < argValue.length; i++) {
           if (
@@ -407,6 +448,47 @@ export class Runtime {
 
   _functionReplace(resolvedArgs: any[]): string {
     return resolvedArgs[0].replace(resolvedArgs[1], resolvedArgs[2]);
+  }
+
+  // logical functions
+  _functionCase(resolvedArgs: any[]): any {
+    const interpreter = this.getInterpreter();
+    for (let i = 0; i < resolvedArgs.length; i++) {
+      if (helpers.isArray(resolvedArgs[i])) {
+        if (resolvedArgs[i].length !== 2) {
+          throw new Error(
+            'TypeError: expected ' +
+              constants.TYPE_NAME_TABLE[constants.TYPE_ARRAY_EXPREF] +
+              ' to have 2 elements For case conditions'
+          );
+        }
+        if (interpreter.visit(resolvedArgs[i][0], resolvedArgs[i][0].context)) {
+          return interpreter.visit(
+            resolvedArgs[i][1],
+            resolvedArgs[i][0].context
+          );
+        }
+      } else {
+        return interpreter.visit(
+          resolvedArgs[i],
+          resolvedArgs[i].context
+        );
+      }
+    }
+    return null;
+  }
+
+  _functionIf(resolvedArgs: any[]): any {
+    const expression = resolvedArgs[0];
+    const thenExpr = resolvedArgs[1];
+    const elseExpr = resolvedArgs[2];
+    const interpreter = this.getInterpreter();
+    if (expression) {
+      return interpreter.visit(thenExpr, thenExpr.context);
+    } 
+    if (elseExpr) {
+      return interpreter.visit(elseExpr, elseExpr.context);
+    }
   }
 
   _functionReverse(resolvedArgs: any[]): any[] | string {

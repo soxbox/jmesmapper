@@ -1570,5 +1570,66 @@
                 "result": "Hi Johncat"
             }
         ]
-    }
+    },
+    {
+      "given": {
+          "a": true,
+          "b": false
+      },
+      "cases": [
+          {
+              "expression": "case([&a==`true`, &'true'])",
+              "result": "true"
+          },
+          {
+            "expression": "case([&a==`false`, &'true'], [&b==`false`,&'false'])",
+            "result": "false"
+          },
+          {
+            "expression": "case([&a==`false`, &'true'], [&b==`true`,&'false'], &'else')",
+            "result": "else"
+          },
+          {
+            "expression": "case([a==`false`, &'true'], [&b==`true`,&'false'], &'else')",
+            "error": "TypeError"
+          },
+          {
+            "expression": "case([&a==`false`, 'true'], [&b==`true`,&'false'], &'else')",
+            "error": "TypeError"
+          },
+          {
+            "expression": "case([&a==`false`, &'true'], [&b==`true`,&'false'], 'else')",
+            "error": "TypeError"
+          }
+      ]
+  },
+  {
+    "given": {
+        "a": true,
+        "b": false
+    },
+    "cases": [
+        {
+            "expression": "if(a, &'true', &'false')",
+            "result": "true"
+        },
+        {
+          "expression": "if(b, &'true', &'false')",
+          "result": "false"
+        },
+        {
+          "expression": "if(b, &'true')",
+          "result": null
+        },
+        {
+          "expression": "if(a, 'true')",
+          "error": "TypeError"
+        },
+        {
+          "expression": "if(a, &'true', 'false')",
+          "error": "TypeError"
+        }
+    ]
+}
+
 ]

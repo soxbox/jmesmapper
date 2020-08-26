@@ -1,28 +1,17 @@
 /* eslint-disable unicorn/prefer-includes */
 import { TreeInterpreter } from './tree-interpreter';
+import { FunctionScope } from './function-scope';
 import * as constants from './constants';
 import * as helpers from './helpers';
-import { IAst, TokenType } from './types';
-
-interface IFunctionSignature {
-  types: number[];
-  variadic?: boolean;
-  optional?: boolean;
-}
-
-interface IFunctionTableType {
-  _func: Function;
-  _signature: IFunctionSignature[];
-}
-
-interface IFunctionTable {
-  [key: string]: IFunctionTableType;
-}
+import { IAst, TokenType, IFunctionSignature, IFunctionTable } from './types';
 
 export class Runtime {
   _interpreter?: TreeInterpreter;
   functionTable: IFunctionTable;
+  dynamicFunctions: FunctionScope;
+
   constructor() {
+    this.dynamicFunctions = new FunctionScope();
     this.functionTable = {
       // name: [function, <signature>]
       // The <signature> can be:
@@ -115,10 +104,23 @@ export class Runtime {
       if: {
         _func: this._functionIf,
         _signature: [
-          {types: [constants.TYPE_ANY]},
-          {types: [constants.TYPE_EXPREF]},
-          {types: [constants.TYPE_EXPREF], optional: true}
-        ]
+          { types: [constants.TYPE_ANY] },
+          { types: [constants.TYPE_EXPREF] },
+          { types: [constants.TYPE_EXPREF], optional: true },
+        ],
+      },
+      define: {
+        _func: this._functionDefine,
+        _signature: [
+          { types: [constants.TYPE_STRING] },
+          { types: [constants.TYPE_EXPREF] },
+        ],
+      },
+      is_defined: {
+        _func: this._functionIsDefined,
+        _signature: [
+          { types: [constants.TYPE_STRING] }
+        ],
       },
       max_by: {
         _func: this._functionMaxBy,
@@ -252,7 +254,10 @@ export class Runtime {
   }
 
   callFunction(name: string, resolvedArgs: any[]) {
-    const functionEntry = this.functionTable[name];
+    let functionEntry = this.functionTable[name];
+    if (functionEntry === undefined) {
+      functionEntry = this.dynamicFunctions.getFunctionEntry(name);
+    }
     if (functionEntry === undefined) {
       throw new Error('Unknown function: ' + name + '()');
     }
@@ -319,7 +324,11 @@ export class Runtime {
         }
       }
       // supports one optional type at the end of the arguments
-      if (typeMatched == false && signature[i].optional && i === (signature.length - 1)) {
+      if (
+        typeMatched == false &&
+        signature[i].optional &&
+        i === signature.length - 1
+      ) {
         if (signature.length > args.length) {
           typeMatched = true;
         }
@@ -469,10 +478,7 @@ export class Runtime {
           );
         }
       } else {
-        return interpreter.visit(
-          resolvedArgs[i],
-          resolvedArgs[i].context
-        );
+        return interpreter.visit(resolvedArgs[i], resolvedArgs[i].context);
       }
     }
     return null;
@@ -485,10 +491,22 @@ export class Runtime {
     const interpreter = this.getInterpreter();
     if (expression) {
       return interpreter.visit(thenExpr, thenExpr.context);
-    } 
+    }
     if (elseExpr) {
       return interpreter.visit(elseExpr, elseExpr.context);
     }
+  }
+
+  _functionDefine(resolvedArgs: any[]): any {
+    const name = resolvedArgs[0];
+    const expRef = resolvedArgs[1];
+    this.dynamicFunctions.registerFunction(name, expRef);
+    return expRef.context;
+  }
+
+  _functionIsDefined(resolvedArgs: any[]): boolean {
+    const func = this.dynamicFunctions.getFunctionEntry(resolvedArgs[0]);
+    return func !== undefined;
   }
 
   _functionReverse(resolvedArgs: any[]): any[] | string {

@@ -1504,16 +1504,16 @@
                 "error": "invalid-type"
             },
             {
-              "expression": "split(string, /,|\\s/g)",
-              "result": [
-                1,
-                2,
-                3,
-                4,
-                5
-            ]
-           }
-      ]
+                "expression": "split(string, /,|\\s/g)",
+                "result": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                ]
+            }
+        ]
     },
     {
         "given": {
@@ -1568,68 +1568,121 @@
             {
                 "expression": "replace(string2, /bob\\//i, 'John')",
                 "result": "Hi Johncat"
+            },
+            {
+                "expression": "replace('bobcat bobcart bobstart', /bob(cat|cart)/gi, 'race$1')",
+                "result": "racecat racecart bobstart"
             }
         ]
     },
     {
-      "given": {
-          "a": true,
-          "b": false
-      },
-      "cases": [
-          {
-              "expression": "case([&a==`true`, &'true'])",
-              "result": "true"
-          },
-          {
-            "expression": "case([&a==`false`, &'true'], [&b==`false`,&'false'])",
-            "result": "false"
-          },
-          {
-            "expression": "case([&a==`false`, &'true'], [&b==`true`,&'false'], &'else')",
-            "result": "else"
-          },
-          {
-            "expression": "case([a==`false`, &'true'], [&b==`true`,&'false'], &'else')",
-            "error": "TypeError"
-          },
-          {
-            "expression": "case([&a==`false`, 'true'], [&b==`true`,&'false'], &'else')",
-            "error": "TypeError"
-          },
-          {
-            "expression": "case([&a==`false`, &'true'], [&b==`true`,&'false'], 'else')",
-            "error": "TypeError"
-          }
-      ]
-  },
-  {
-    "given": {
-        "a": true,
-        "b": false
+        "given": {
+            "a": true,
+            "b": false
+        },
+        "cases": [
+            {
+                "expression": "case([&a==`true`, &'true'])",
+                "result": "true"
+            },
+            {
+                "expression": "case([&a==`false`, &'true'], [&b==`false`,&'false'])",
+                "result": "false"
+            },
+            {
+                "expression": "case([&a==`false`, &'true'], [&b==`true`,&'false'], &'else')",
+                "result": "else"
+            },
+            {
+                "expression": "case([a==`false`, &'true'], [&b==`true`,&'false'], &'else')",
+                "error": "TypeError"
+            },
+            {
+                "expression": "case([&a==`false`, 'true'], [&b==`true`,&'false'], &'else')",
+                "error": "TypeError"
+            },
+            {
+                "expression": "case([&a==`false`, &'true'], [&b==`true`,&'false'], 'else')",
+                "error": "TypeError"
+            }
+        ]
     },
-    "cases": [
-        {
-            "expression": "if(a, &'true', &'false')",
-            "result": "true"
+    {
+        "given": {
+            "a": true,
+            "b": false
         },
-        {
-          "expression": "if(b, &'true', &'false')",
-          "result": "false"
+        "cases": [
+            {
+                "expression": "if(a, &'true', &'false')",
+                "result": "true"
+            },
+            {
+                "expression": "if(b, &'true', &'false')",
+                "result": "false"
+            },
+            {
+                "expression": "if(b, &'true')",
+                "result": null
+            },
+            {
+                "expression": "if(a, 'true')",
+                "error": "TypeError"
+            },
+            {
+                "expression": "if(a, &'true', 'false')",
+                "error": "TypeError"
+            }
+        ]
+    },
+    {
+        "given": {
+            "a": true,
+            "b": false
         },
-        {
-          "expression": "if(b, &'true')",
-          "result": null
-        },
-        {
-          "expression": "if(a, 'true')",
-          "error": "TypeError"
-        },
-        {
-          "expression": "if(a, &'true', 'false')",
-          "error": "TypeError"
-        }
-    ]
-}
-
+        "cases": [
+            {
+                "expression": "define('racecar', &name).[racecar({name: 'Maple'}),racecar({name: 'Bumble'})]",
+                "result": [
+                    "Maple",
+                    "Bumble"
+                ]
+            },
+            {
+                "expression": "define('racecar', &name)",
+                "result": {
+                    "a": true,
+                    "b": false
+                }
+            },
+            {
+                "expression": "define('racecar', &name).define('racecar', &name)",
+                "error": "TypeError"
+            },
+            {
+                "expression": "define('racecar', name)",
+                "error": "TypeError"
+            },
+            {
+                "expression": "define(`1`, &name)",
+                "error": "TypeError"
+            },
+            {
+                "expression": "define('test', &a).test(@)",
+                "result": true
+            },
+            {
+                "expression": "define('test', &a).is_defined('test')",
+                "result": true
+            },
+            {
+                "expression": "is_defined('test')",
+                "result": false
+            },
+            {
+                "expression": "is_defined(@)",
+                "error": "typeError"
+            }
+        ]
+    }
 ]

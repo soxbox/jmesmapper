@@ -4,6 +4,21 @@ export interface IToken {
   start: number;
 }
 
+export interface IFunctionSignature {
+  types: number[];
+  variadic?: boolean;
+  optional?: boolean;
+}
+
+export interface IFunctionTableType {
+  _func: Function;
+  _signature: IFunctionSignature[];
+}
+
+export interface IFunctionTable {
+  [key: string]: IFunctionTableType;
+}
+
 export enum TokenType {
   EOF = 'EOF',
   UNQUOTEDIDENTIFIER = 'UnquotedIdentifier',

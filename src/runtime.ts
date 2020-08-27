@@ -4,6 +4,7 @@ import { FunctionScope } from './function-scope';
 import * as constants from './constants';
 import * as helpers from './helpers';
 import { IAst, TokenType, IFunctionSignature, IFunctionTable } from './types';
+import { words, upperFirst } from 'lodash';
 
 export class Runtime {
   _interpreter?: TreeInterpreter;
@@ -118,9 +119,7 @@ export class Runtime {
       },
       is_defined: {
         _func: this._functionIsDefined,
-        _signature: [
-          { types: [constants.TYPE_STRING] }
-        ],
+        _signature: [{ types: [constants.TYPE_STRING] }],
       },
       max_by: {
         _func: this._functionMaxBy,
@@ -176,6 +175,19 @@ export class Runtime {
           { types: [constants.TYPE_STRING, constants.TYPE_REGEXP] },
           { types: [constants.TYPE_STRING] },
         ],
+      },
+      words: {
+        _func: this._functionWords,
+        _signature: [
+          { types: [constants.TYPE_STRING] },
+          { types: [constants.TYPE_STRING, constants.TYPE_REGEXP], optional: true },
+        ]
+      },
+      upper_first: {
+        _func: this._functionUpperFirst,
+        _signature: [
+          { types: [constants.TYPE_STRING] }
+        ]
       },
       keys: {
         _func: this._functionKeys,
@@ -457,6 +469,14 @@ export class Runtime {
 
   _functionReplace(resolvedArgs: any[]): string {
     return resolvedArgs[0].replace(resolvedArgs[1], resolvedArgs[2]);
+  }
+
+  _functionWords(resolvedArgs: any[]): string[] {
+    return words(resolvedArgs[0], resolvedArgs[1]);
+  }
+
+  _functionUpperFirst(resolvedArgs: any[]): string {
+    return upperFirst(resolvedArgs[0]);
   }
 
   // logical functions

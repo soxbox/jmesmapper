@@ -1684,5 +1684,43 @@
                 "error": "typeError"
             }
         ]
+    },
+    {
+        "given": {
+            "words": "one, two, & three"
+        },
+        "cases": [
+            {
+                "expression": "words(words)",
+                "result": ["one", "two", "three"]
+            },
+            {
+                "expression": "words(words, /[^\\s,]+/g)",
+                "result": ["one", "two", "&", "three"]
+            },
+            {
+                "expression": "words(&words, /[^ ,]/g)",
+                "error": "TypeError"
+            }
+        ]
+    },
+    {
+        "given": {
+            "words": "one, two, & three"
+        },
+        "cases": [
+            {
+                "expression": "upper_first('one')",
+                "result": "One"
+            },
+            {
+                "expression": "upper_first('ONE')",
+                "result": "ONE"
+            },
+            {
+                "expression": "upper_first(&words)",
+                "error": "TypeError"
+            }
+        ]
     }
 ]

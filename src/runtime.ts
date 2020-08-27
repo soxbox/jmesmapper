@@ -121,6 +121,13 @@ export class Runtime {
         _func: this._functionIsDefined,
         _signature: [{ types: [constants.TYPE_STRING] }],
       },
+      find: {
+        _func: this._functionFind,
+        _signature: [
+          { types: [constants.TYPE_ARRAY] },
+          { types: [constants.TYPE_EXPREF] },
+        ],
+      },
       max_by: {
         _func: this._functionMaxBy,
         _signature: [
@@ -527,6 +534,20 @@ export class Runtime {
   _functionIsDefined(resolvedArgs: any[]): boolean {
     const func = this.dynamicFunctions.getFunctionEntry(resolvedArgs[0]);
     return func !== undefined;
+  }
+
+  // collection functions
+  _functionFind(resolvedArgs: any[]): any {
+    const data: any[] = resolvedArgs[0];
+    const exprefNode = resolvedArgs[1];
+    const interpreter = this.getInterpreter();
+
+    for(let i=1; i <= data.length; i++) {
+      if (interpreter.visit(exprefNode, data[i])) {
+        return data[i];
+      }
+    }
+    return null;
   }
 
   _functionReverse(resolvedArgs: any[]): any[] | string {

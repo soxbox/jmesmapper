@@ -25,6 +25,7 @@ export const TYPE_ARRAY_NUMBER = 8;
 export const TYPE_ARRAY_STRING = 9;
 export const TYPE_REGEXP = 10;
 export const TYPE_ARRAY_EXPREF = 11;
+export const TYPE_ARRAY_OBJECT = 12;
 export const TYPE_NAME_TABLE: IStringObject = {
   0: 'number',
   1: 'any',

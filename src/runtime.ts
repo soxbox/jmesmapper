@@ -128,6 +128,14 @@ export class Runtime {
           { types: [constants.TYPE_EXPREF] },
         ],
       },
+      to_entries: {
+        _func: this._functionToEntires,
+        _signature: [{ types: [constants.TYPE_OBJECT] }],
+      },
+      from_entries: {
+        _func: this._functionFromEntires,
+        _signature: [{ types: [constants.TYPE_ARRAY_OBJECT] }],
+      },
       max_by: {
         _func: this._functionMaxBy,
         _signature: [
@@ -187,14 +195,15 @@ export class Runtime {
         _func: this._functionWords,
         _signature: [
           { types: [constants.TYPE_STRING] },
-          { types: [constants.TYPE_STRING, constants.TYPE_REGEXP], optional: true },
-        ]
+          {
+            types: [constants.TYPE_STRING, constants.TYPE_REGEXP],
+            optional: true,
+          },
+        ],
       },
       upper_first: {
         _func: this._functionUpperFirst,
-        _signature: [
-          { types: [constants.TYPE_STRING] }
-        ]
+        _signature: [{ types: [constants.TYPE_STRING] }],
       },
       keys: {
         _func: this._functionKeys,
@@ -387,6 +396,7 @@ export class Runtime {
       expected === constants.TYPE_ARRAY_STRING ||
       expected === constants.TYPE_ARRAY_NUMBER ||
       expected === constants.TYPE_ARRAY_EXPREF ||
+      expected === constants.TYPE_ARRAY_OBJECT ||
       expected === constants.TYPE_ARRAY
     ) {
       // The expected type can either just be array,
@@ -405,6 +415,8 @@ export class Runtime {
           subtype = constants.TYPE_STRING;
         } else if (expected === constants.TYPE_ARRAY_EXPREF) {
           subtype = constants.TYPE_EXPREF;
+        } else if (expected === constants.TYPE_ARRAY_OBJECT) {
+          subtype = constants.TYPE_OBJECT;
         }
         for (let i = 0; i < argValue.length; i++) {
           if (
@@ -542,7 +554,7 @@ export class Runtime {
     const exprefNode = resolvedArgs[1];
     const interpreter = this.getInterpreter();
 
-    for(let i=1; i <= data.length; i++) {
+    for (let i = 1; i <= data.length; i++) {
       if (interpreter.visit(exprefNode, data[i])) {
         return data[i];
       }
@@ -849,6 +861,34 @@ export class Runtime {
           out[value] = [];
         }
         out[value].push(item);
+        return out;
+      },
+      {}
+    );
+  }
+
+  _functionToEntires(resolvedArgs: any[]): any {
+    const data = resolvedArgs[0];
+    const keys = Object.keys(data);
+    const entries = [];
+    for (let i = 0; i < keys.length; i++) {
+      if (Object.prototype.hasOwnProperty.call(data, keys[i])) {
+        entries.push({
+          key: keys[i],
+          value: data[keys[i]],
+        });
+      }
+    }
+    return entries;
+  }
+
+  _functionFromEntires(resolvedArgs: any[]): any {
+    return resolvedArgs[0].reduce(
+      (
+        out: { [key: string]: any },
+        { key, value }: { key: string; value: any }
+      ) => {
+        out[key] = value;
         return out;
       },
       {}

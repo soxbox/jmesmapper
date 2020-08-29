@@ -1,5 +1,6 @@
 import { IFunctionTable, IFunctionTableType, IAst } from './types';
 import * as constants from './constants';
+import { Runtime } from './runtime';
 
 export class FunctionScope {
   functionEntries: IFunctionTable = {};
@@ -10,9 +11,9 @@ export class FunctionScope {
     }
     this.functionEntries[name] = {
       _signature: [{ types: [constants.TYPE_ANY] }],
-      _func: function (resolvedArgs: any[]) {
+      _func: function (runtime: Runtime, resolvedArgs: any[]) {
         // @ts-ignore
-        const interpreter = this.getInterpreter();
+        const interpreter = runtime.getInterpreter();
         const data = resolvedArgs[0];
         return interpreter.visit(exprefNode, data);
       },

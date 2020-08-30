@@ -50,10 +50,6 @@ export class Runtime {
             },
           ],
         },
-        merge: {
-          _func: objectFunctions.merge,
-          _signature: [{ types: [constants.TYPE_OBJECT], variadic: true }],
-        },
         case: {
           _func: conditionalFunctions.caseFunction,
           _signature: [
@@ -82,15 +78,6 @@ export class Runtime {
           _func: conditionalFunctions.isDefined,
           _signature: [{ types: [constants.TYPE_STRING] }],
         },
-        to_entries: {
-          _func: objectFunctions.toEntires,
-          _signature: [{ types: [constants.TYPE_OBJECT] }],
-        },
-        from_entries: {
-          _func: objectFunctions.fromEntires,
-          _signature: [{ types: [constants.TYPE_ARRAY_OBJECT] }],
-        },
-
         min: {
           _func: numberFunctions.min,
           _signature: [
@@ -104,14 +91,6 @@ export class Runtime {
           _func: typeFunctions.type,
           _signature: [{ types: [constants.TYPE_ANY] }],
         },
-        keys: {
-          _func: objectFunctions.keys,
-          _signature: [{ types: [constants.TYPE_OBJECT] }],
-        },
-        values: {
-          _func: objectFunctions.values,
-          _signature: [{ types: [constants.TYPE_OBJECT] }],
-        },
         to_number: {
           _func: numberFunctions.toNumber,
           _signature: [{ types: [constants.TYPE_ANY] }],
@@ -123,7 +102,8 @@ export class Runtime {
       },
       stringFunctions.definition,
       mathFunctions.definition,
-      arrayFunctions.definition
+      arrayFunctions.definition,
+      objectFunctions.definition
     );
   }
 

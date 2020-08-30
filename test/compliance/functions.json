@@ -2147,5 +2147,44 @@
         "error": "TypeError"
       }
     ]
+  },
+  {
+    "given": {
+      "obj": { "a": 1, "b": "2", "c": 3 }
+    },
+    "cases": [
+      {
+        "expression": "pick(obj, ['a', 'c'])",
+        "result": { "a": 1, "c": 3 }
+      },
+      {
+        "expression": "pick(obj, 'a')",
+        "result": { "a": 1 }
+      },
+      {
+        "expression": "pick(obj, `1`)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "pick('a', ['a', 'c'])",
+        "error": "TypeError"
+      },
+      {
+        "expression": "omit(obj, ['a', 'c'])",
+        "result": { "b": 2 }
+      },
+      {
+        "expression": "omit(obj, 'a')",
+        "result": { "b": 2, "c": 3 }
+      },
+      {
+        "expression": "omit(obj, `1`)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "omit('a', ['a', 'c'])",
+        "error": "TypeError"
+      }
+    ]
   }
 ]

@@ -1,4 +1,7 @@
 import { Runtime } from '../runtime';
+import _ from 'lodash';
+import { IFunctionTable } from '../types';
+import * as constants from '../constants';
 
 export function merge(
   _runtime: Runtime,
@@ -55,3 +58,48 @@ export function values(_runtime: Runtime, resolvedArgs: any[]): any[] {
   }
   return values;
 }
+
+export function pick(_runtime: Runtime, resolvedArgs: any[]): object {
+  return _.pick(resolvedArgs[0], resolvedArgs[1]);
+}
+
+export function omit(_runtime: Runtime, resolvedArgs: any[]): object {
+  return _.omit(resolvedArgs[0], resolvedArgs[1]);
+}
+
+export const definition: IFunctionTable = {
+  merge: {
+    _func: merge,
+    _signature: [{ types: [constants.TYPE_OBJECT], variadic: true }],
+  },
+  to_entries: {
+    _func: toEntires,
+    _signature: [{ types: [constants.TYPE_OBJECT] }],
+  },
+  from_entries: {
+    _func: fromEntires,
+    _signature: [{ types: [constants.TYPE_ARRAY_OBJECT] }],
+  },
+  keys: {
+    _func: keys,
+    _signature: [{ types: [constants.TYPE_OBJECT] }],
+  },
+  values: {
+    _func: values,
+    _signature: [{ types: [constants.TYPE_OBJECT] }],
+  },
+  pick: {
+    _func: pick,
+    _signature: [
+      { types: [constants.TYPE_OBJECT] },
+      { types: [constants.TYPE_STRING, constants.TYPE_ARRAY_STRING] },
+    ],
+  },
+  omit: {
+    _func: omit,
+    _signature: [
+      { types: [constants.TYPE_OBJECT] },
+      { types: [constants.TYPE_STRING, constants.TYPE_ARRAY_STRING] },
+    ],
+  },
+};

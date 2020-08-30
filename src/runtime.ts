@@ -35,22 +35,6 @@ export class Runtime {
         // types.  If the type is "any" then no type checking
         // occurs on the argument.  Variadic is optional
         // and if not provided is assumed to be false.
-        abs: {
-          _func: mathFunctions.abs,
-          _signature: [{ types: [constants.TYPE_NUMBER] }],
-        },
-        avg: {
-          _func: mathFunctions.avg,
-          _signature: [{ types: [constants.TYPE_ARRAY_NUMBER] }],
-        },
-        ceil: {
-          _func: mathFunctions.ceil,
-          _signature: [{ types: [constants.TYPE_NUMBER] }],
-        },
-        floor: {
-          _func: mathFunctions.floor,
-          _signature: [{ types: [constants.TYPE_NUMBER] }],
-        },
         let: {
           _func: conditionalFunctions.letFunction,
           _signature: [
@@ -139,10 +123,6 @@ export class Runtime {
             { types: [constants.TYPE_EXPREF] },
           ],
         },
-        sum: {
-          _func: mathFunctions.Sum,
-          _signature: [{ types: [constants.TYPE_ARRAY_NUMBER] }],
-        },
         min: {
           _func: numberFunctions.min,
           _signature: [
@@ -218,7 +198,8 @@ export class Runtime {
           _signature: [{ types: [constants.TYPE_ANY], variadic: true }],
         },
       },
-      stringFunctions.definition
+      stringFunctions.definition,
+      mathFunctions.definition
     );
   }
 

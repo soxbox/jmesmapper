@@ -2347,5 +2347,29 @@
         "result": false
       }
     ]
+  },
+  {
+    "given": {
+      "isoDate": "2016-05-25T09:24:15.123",
+      "date1": "May 25 1982"
+    },
+    "cases": [
+      {
+        "expression": "date_format(date_parse(isoDate))",
+        "result": "2016-05-25T16:24:15.123Z"
+      },
+      {
+        "expression": "date_parse('-200-02-01')",
+        "result": null
+      },
+      {
+        "expression": "date_format(date_parse(isoDate), 'yyyy LLL dd')",
+        "result": "2016 May 25"
+      },
+      {
+        "expression": "date_format(date_parse(date1, 'LLL dd yyyy'), 'yyyy-MM-dd')",
+        "result": "1982-05-25"
+      }
+    ]
   }
 ]

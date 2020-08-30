@@ -8,6 +8,7 @@ import * as arrayFunctions from './functions/array-functions';
 import * as stringFunctions from './functions/string-functions';
 import * as objectFunctions from './functions/object-functions';
 import * as typeFunctions from './functions/type-functions';
+import * as dateFunctions from "./functions/date-functions";
 import * as conditionalFunctions from './functions/conditional-functions';
 import { IAst, TokenType, IFunctionSignature, IFunctionTable } from './types';
 
@@ -94,7 +95,8 @@ export class Runtime {
       mathFunctions.definition,
       arrayFunctions.definition,
       objectFunctions.definition,
-      typeFunctions.definition
+      typeFunctions.definition,
+      dateFunctions.definition
     );
   }
 
@@ -275,6 +277,8 @@ export class Runtime {
         return constants.TYPE_BOOLEAN;
       case '[object Null]':
         return constants.TYPE_NULL;
+      case '[object Date]': 
+        return constants.TYPE_DATE;
       case '[object RegExp]':
         return constants.TYPE_REGEXP;
       case '[object Object]':

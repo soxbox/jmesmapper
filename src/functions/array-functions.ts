@@ -262,7 +262,129 @@ export function intersection(_runtime: Runtime, resolvedArgs: any[]): any[] {
   return _.intersection(resolvedArgs[0], resolvedArgs[1]);
 }
 
+export function keyBy(runtime: Runtime, resolvedArgs: any[]): object {
+  const data = resolvedArgs[0];
+  const interpreter = runtime.getInterpreter();
+  const out: { [key: string]: any } = {};
+
+  for (let i = 0; i < data.length; i++) {
+    const key = interpreter.visit(resolvedArgs[1], data[i]);
+    out[key] = data[i];
+  }
+  return out;
+}
+
 export const definition: IFunctionTable = {
+  chunk: {
+    _func: chunk,
+    _signature: [
+      {
+        types: [constants.TYPE_ARRAY],
+      },
+      {
+        types: [constants.TYPE_NUMBER],
+      },
+    ],
+  },
+  difference: {
+    _func: difference,
+    _signature: [
+      {
+        types: [constants.TYPE_ARRAY],
+      },
+      {
+        types: [constants.TYPE_ARRAY],
+      },
+    ],
+  },
+  find: {
+    _func: find,
+    _signature: [
+      {
+        types: [constants.TYPE_ARRAY],
+      },
+      {
+        types: [constants.TYPE_EXPREF],
+      },
+    ],
+  },
+  find_index: {
+    _func: findIndex,
+    _signature: [
+      {
+        types: [constants.TYPE_ARRAY],
+      },
+      {
+        types: [constants.TYPE_EXPREF],
+      },
+    ],
+  },
+  find_last: {
+    _func: findLast,
+    _signature: [
+      {
+        types: [constants.TYPE_ARRAY],
+      },
+      {
+        types: [constants.TYPE_EXPREF],
+      },
+    ],
+  },
+  find_last_index: {
+    _func: findLastIndex,
+    _signature: [
+      {
+        types: [constants.TYPE_ARRAY],
+      },
+      {
+        types: [constants.TYPE_EXPREF],
+      },
+    ],
+  },
+  group_by: {
+    _func: groupBy,
+    _signature: [
+      {
+        types: [constants.TYPE_ARRAY],
+      },
+      {
+        types: [constants.TYPE_EXPREF],
+      },
+    ],
+  },
+  intersection: {
+    _func: intersection,
+    _signature: [
+      {
+        types: [constants.TYPE_ARRAY],
+      },
+      {
+        types: [constants.TYPE_ARRAY],
+      },
+    ],
+  },
+  join: {
+    _func: join,
+    _signature: [
+      {
+        types: [constants.TYPE_STRING],
+      },
+      {
+        types: [constants.TYPE_ARRAY_STRING],
+      },
+    ],
+  },
+  key_by: {
+    _func: keyBy,
+    _signature: [
+      {
+        types: [constants.TYPE_ARRAY_OBJECT],
+      },
+      {
+        types: [constants.TYPE_EXPREF],
+      },
+    ],
+  },
   length: {
     _func: length,
     _signature: [
@@ -278,50 +400,42 @@ export const definition: IFunctionTable = {
   map: {
     _func: map,
     _signature: [
-      { types: [constants.TYPE_EXPREF] },
-      { types: [constants.TYPE_ARRAY] },
-    ],
-  },
-  find: {
-    _func: find,
-    _signature: [
-      { types: [constants.TYPE_ARRAY] },
-      { types: [constants.TYPE_EXPREF] },
-    ],
-  },
-  find_index: {
-    _func: findIndex,
-    _signature: [
-      { types: [constants.TYPE_ARRAY] },
-      { types: [constants.TYPE_EXPREF] },
-    ],
-  },
-  find_last: {
-    _func: findLast,
-    _signature: [
-      { types: [constants.TYPE_ARRAY] },
-      { types: [constants.TYPE_EXPREF] },
-    ],
-  },
-  find_last_index: {
-    _func: findLastIndex,
-    _signature: [
-      { types: [constants.TYPE_ARRAY] },
-      { types: [constants.TYPE_EXPREF] },
+      {
+        types: [constants.TYPE_EXPREF],
+      },
+      {
+        types: [constants.TYPE_ARRAY],
+      },
     ],
   },
   max_by: {
     _func: maxBy,
     _signature: [
-      { types: [constants.TYPE_ARRAY] },
-      { types: [constants.TYPE_EXPREF] },
+      {
+        types: [constants.TYPE_ARRAY],
+      },
+      {
+        types: [constants.TYPE_EXPREF],
+      },
     ],
   },
   min_by: {
     _func: minBy,
     _signature: [
-      { types: [constants.TYPE_ARRAY] },
-      { types: [constants.TYPE_EXPREF] },
+      {
+        types: [constants.TYPE_ARRAY],
+      },
+      {
+        types: [constants.TYPE_EXPREF],
+      },
+    ],
+  },
+  reverse: {
+    _func: reverse,
+    _signature: [
+      {
+        types: [constants.TYPE_STRING, constants.TYPE_ARRAY],
+      },
     ],
   },
   sort: {
@@ -335,51 +449,20 @@ export const definition: IFunctionTable = {
   sort_by: {
     _func: sortBy,
     _signature: [
-      { types: [constants.TYPE_ARRAY] },
-      { types: [constants.TYPE_EXPREF] },
-    ],
-  },
-  group_by: {
-    _func: groupBy,
-    _signature: [
-      { types: [constants.TYPE_ARRAY] },
-      { types: [constants.TYPE_EXPREF] },
-    ],
-  },
-  join: {
-    _func: join,
-    _signature: [
-      { types: [constants.TYPE_STRING] },
-      { types: [constants.TYPE_ARRAY_STRING] },
-    ],
-  },
-  reverse: {
-    _func: reverse,
-    _signature: [{ types: [constants.TYPE_STRING, constants.TYPE_ARRAY] }],
-  },
-  chunk: {
-    _func: chunk,
-    _signature: [
-      { types: [constants.TYPE_ARRAY] },
-      { types: [constants.TYPE_NUMBER] },
+      {
+        types: [constants.TYPE_ARRAY],
+      },
+      {
+        types: [constants.TYPE_EXPREF],
+      },
     ],
   },
   to_array: {
     _func: toArray,
-    _signature: [{ types: [constants.TYPE_ANY] }],
-  },
-  intersection: {
-    _func: intersection,
     _signature: [
-      { types: [constants.TYPE_ARRAY] },
-      { types: [constants.TYPE_ARRAY] },
-    ],
-  },
-  difference: {
-    _func: difference,
-    _signature: [
-      { types: [constants.TYPE_ARRAY] },
-      { types: [constants.TYPE_ARRAY] },
+      {
+        types: [constants.TYPE_ANY],
+      },
     ],
   },
 };

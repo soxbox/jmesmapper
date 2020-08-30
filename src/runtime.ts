@@ -42,25 +42,6 @@ export class Runtime {
             { types: [constants.TYPE_EXPREF] },
           ],
         },
-        length: {
-          _func: arrayFunctions.length,
-          _signature: [
-            {
-              types: [
-                constants.TYPE_STRING,
-                constants.TYPE_ARRAY,
-                constants.TYPE_OBJECT,
-              ],
-            },
-          ],
-        },
-        map: {
-          _func: arrayFunctions.map,
-          _signature: [
-            { types: [constants.TYPE_EXPREF] },
-            { types: [constants.TYPE_ARRAY] },
-          ],
-        },
         max: {
           _func: numberFunctions.max,
           _signature: [
@@ -101,13 +82,6 @@ export class Runtime {
           _func: conditionalFunctions.isDefined,
           _signature: [{ types: [constants.TYPE_STRING] }],
         },
-        find: {
-          _func: arrayFunctions.find,
-          _signature: [
-            { types: [constants.TYPE_ARRAY] },
-            { types: [constants.TYPE_EXPREF] },
-          ],
-        },
         to_entries: {
           _func: objectFunctions.toEntires,
           _signature: [{ types: [constants.TYPE_OBJECT] }],
@@ -116,13 +90,7 @@ export class Runtime {
           _func: objectFunctions.fromEntires,
           _signature: [{ types: [constants.TYPE_ARRAY_OBJECT] }],
         },
-        max_by: {
-          _func: arrayFunctions.maxBy,
-          _signature: [
-            { types: [constants.TYPE_ARRAY] },
-            { types: [constants.TYPE_EXPREF] },
-          ],
-        },
+
         min: {
           _func: numberFunctions.min,
           _signature: [
@@ -131,13 +99,7 @@ export class Runtime {
             },
           ],
         },
-        min_by: {
-          _func: arrayFunctions.minBy,
-          _signature: [
-            { types: [constants.TYPE_ARRAY] },
-            { types: [constants.TYPE_EXPREF] },
-          ],
-        },
+
         type: {
           _func: typeFunctions.type,
           _signature: [{ types: [constants.TYPE_ANY] }],
@@ -150,45 +112,6 @@ export class Runtime {
           _func: objectFunctions.values,
           _signature: [{ types: [constants.TYPE_OBJECT] }],
         },
-        sort: {
-          _func: arrayFunctions.sort,
-          _signature: [
-            {
-              types: [constants.TYPE_ARRAY_STRING, constants.TYPE_ARRAY_NUMBER],
-            },
-          ],
-        },
-        sort_by: {
-          _func: arrayFunctions.sortBy,
-          _signature: [
-            { types: [constants.TYPE_ARRAY] },
-            { types: [constants.TYPE_EXPREF] },
-          ],
-        },
-        group_by: {
-          _func: arrayFunctions.groupBy,
-          _signature: [
-            { types: [constants.TYPE_ARRAY] },
-            { types: [constants.TYPE_EXPREF] },
-          ],
-        },
-        join: {
-          _func: arrayFunctions.join,
-          _signature: [
-            { types: [constants.TYPE_STRING] },
-            { types: [constants.TYPE_ARRAY_STRING] },
-          ],
-        },
-        reverse: {
-          _func: arrayFunctions.reverse,
-          _signature: [
-            { types: [constants.TYPE_STRING, constants.TYPE_ARRAY] },
-          ],
-        },
-        to_array: {
-          _func: arrayFunctions.toArray,
-          _signature: [{ types: [constants.TYPE_ANY] }],
-        },
         to_number: {
           _func: numberFunctions.toNumber,
           _signature: [{ types: [constants.TYPE_ANY] }],
@@ -199,7 +122,8 @@ export class Runtime {
         },
       },
       stringFunctions.definition,
-      mathFunctions.definition
+      mathFunctions.definition,
+      arrayFunctions.definition
     );
   }
 

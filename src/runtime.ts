@@ -2,7 +2,6 @@
 import { TreeInterpreter } from './tree-interpreter';
 import { FunctionScope } from './function-scope';
 import * as constants from './constants';
-import * as helpers from './helpers';
 import * as mathFunctions from './functions/math-functions';
 import * as numberFunctions from './functions/number-functions';
 import * as arrayFunctions from './functions/array-functions';
@@ -86,24 +85,16 @@ export class Runtime {
             },
           ],
         },
-
-        type: {
-          _func: typeFunctions.type,
-          _signature: [{ types: [constants.TYPE_ANY] }],
-        },
         to_number: {
           _func: numberFunctions.toNumber,
           _signature: [{ types: [constants.TYPE_ANY] }],
-        },
-        not_null: {
-          _func: typeFunctions.notNull,
-          _signature: [{ types: [constants.TYPE_ANY], variadic: true }],
         },
       },
       stringFunctions.definition,
       mathFunctions.definition,
       arrayFunctions.definition,
-      objectFunctions.definition
+      objectFunctions.definition,
+      typeFunctions.definition
     );
   }
 

@@ -2234,5 +2234,118 @@
         "error": "TypeError"
       }
     ]
+  },
+  {
+    "given": {
+      "array": [1, 2, 3],
+      "object": { "a": 1 },
+      "string": "test",
+      "boolean": false,
+      "null": null,
+      "number": 1.24,
+      "integer": 5,
+      "empty": {
+        "array": [],
+        "object": {}
+      }
+    },
+    "cases": [
+      {
+        "expression": "is_string(string)",
+        "result": true
+      },
+      {
+        "expression": "is_string(number)",
+        "result": false
+      },
+      {
+        "expression": "is_null(null)",
+        "result": true
+      },
+      {
+        "expression": "is_null(number)",
+        "result": false
+      },
+      {
+        "expression": "is_nil(null)",
+        "result": true
+      },
+      {
+        "expression": "is_nil(number)",
+        "result": false
+      },
+      {
+        "expression": "is_boolean(boolean)",
+        "result": true
+      },
+      {
+        "expression": "is_boolean(number)",
+        "result": false
+      },
+      {
+        "expression": "is_array(array)",
+        "result": true
+      },
+      {
+        "expression": "is_array(number)",
+        "result": false
+      },
+      {
+        "expression": "is_object(object)",
+        "result": true
+      },
+      {
+        "expression": "is_object(number)",
+        "result": false
+      },
+      {
+        "expression": "is_nan(number)",
+        "result": false
+      },
+      {
+        "expression": "is_integer(integer)",
+        "result": true
+      },
+      {
+        "expression": "is_integer(number)",
+        "result": false
+      },
+      {
+        "expression": "is_empty(null)",
+        "result": true
+      },
+      {
+        "expression": "is_empty(empty.array)",
+        "result": true
+      },
+      {
+        "expression": "is_empty(empty.object)",
+        "result": true
+      },
+      {
+        "expression": "is_empty('')",
+        "result": true
+      },
+      {
+        "expression": "is_empty('  ')",
+        "result": true
+      },
+      {
+        "expression": "is_empty(number)",
+        "result": false
+      },
+      {
+        "expression": "is_empty(string)",
+        "result": false
+      },
+      {
+        "expression": "is_empty(array)",
+        "result": false
+      },
+      {
+        "expression": "is_empty(object)",
+        "result": false
+      }
+    ]
   }
 ]

@@ -2114,6 +2114,22 @@
     },
     "cases": [
       {
+        "expression": "some(people, &age < `10`)",
+        "result": true
+      },
+      {
+        "expression": "some(people, &age < `8`)",
+        "result": false
+      },
+      {
+        "expression": "some(people, age < `8`)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "some('1', &age < `8`)",
+        "error": "TypeError"
+      },
+      {
         "expression": "key_by(people, &id)",
         "result": {
           "1": {

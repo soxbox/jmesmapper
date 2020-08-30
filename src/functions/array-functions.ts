@@ -286,6 +286,18 @@ export function some(runtime: Runtime, resolvedArgs: any[]): boolean {
   return false;
 }
 
+export function every(runtime: Runtime, resolvedArgs: any[]): boolean {
+  const data = resolvedArgs[0];
+  const expref = resolvedArgs[1];
+  const interpreter = runtime.getInterpreter();
+  for (let i = 0; i < data.length; i++) {
+    if (!interpreter.visit(expref, data[i])) {
+      return false;
+    }
+  }
+  return true;
+}
+
 export const definition: IFunctionTable = {
   chunk: {
     _func: chunk,
@@ -307,6 +319,13 @@ export const definition: IFunctionTable = {
       {
         types: [constants.TYPE_ARRAY],
       },
+    ],
+  },
+  every: {
+    _func: every,
+    _signature: [
+      { types: [constants.TYPE_ARRAY_OBJECT] },
+      { types: [constants.TYPE_EXPREF] },
     ],
   },
   find: {

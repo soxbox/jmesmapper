@@ -2130,6 +2130,22 @@
         "error": "TypeError"
       },
       {
+        "expression": "every(people, &age < `10`)",
+        "result": false
+      },
+      {
+        "expression": "every(people, &age >= `8`)",
+        "result": true
+      },
+      {
+        "expression": "every(people, age < `8`)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "every('1', &age < `8`)",
+        "error": "TypeError"
+      },
+      {
         "expression": "key_by(people, &id)",
         "result": {
           "1": {

@@ -2184,6 +2184,22 @@
       {
         "expression": "omit('a', ['a', 'c'])",
         "error": "TypeError"
+      },
+      {
+        "expression": "has_key(obj, 'a')",
+        "result": true
+      },
+      {
+        "expression": "has_key(obj, 'd')",
+        "result": false
+      },
+      {
+        "expression": "has_key(obj, `2`)",
+        "error": "TypeError"
+      },
+      {
+        "expression": "has_key('a', 'd')",
+        "error": "TypeError"
       }
     ]
   }

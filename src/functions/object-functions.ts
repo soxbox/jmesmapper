@@ -67,39 +67,83 @@ export function omit(_runtime: Runtime, resolvedArgs: any[]): object {
   return _.omit(resolvedArgs[0], resolvedArgs[1]);
 }
 
+export function hasKey(_runtime: Runtime, resolvedArgs: any[]): boolean {
+  return Object.prototype.hasOwnProperty.call(resolvedArgs[0], resolvedArgs[1]);
+}
+
 export const definition: IFunctionTable = {
-  merge: {
-    _func: merge,
-    _signature: [{ types: [constants.TYPE_OBJECT], variadic: true }],
-  },
-  to_entries: {
-    _func: toEntires,
-    _signature: [{ types: [constants.TYPE_OBJECT] }],
-  },
   from_entries: {
     _func: fromEntires,
-    _signature: [{ types: [constants.TYPE_ARRAY_OBJECT] }],
+    _signature: [
+      {
+        types: [constants.TYPE_ARRAY_OBJECT],
+      },
+    ],
+  },
+  has_key: {
+    _func: hasKey,
+    _signature: [
+      {
+        types: [constants.TYPE_OBJECT],
+      },
+      {
+        types: [constants.TYPE_STRING],
+      },
+    ],
   },
   keys: {
     _func: keys,
-    _signature: [{ types: [constants.TYPE_OBJECT] }],
-  },
-  values: {
-    _func: values,
-    _signature: [{ types: [constants.TYPE_OBJECT] }],
-  },
-  pick: {
-    _func: pick,
     _signature: [
-      { types: [constants.TYPE_OBJECT] },
-      { types: [constants.TYPE_STRING, constants.TYPE_ARRAY_STRING] },
+      {
+        types: [constants.TYPE_OBJECT],
+      },
+    ],
+  },
+  merge: {
+    _func: merge,
+    _signature: [
+      {
+        types: [constants.TYPE_OBJECT],
+        variadic: true,
+      },
     ],
   },
   omit: {
     _func: omit,
     _signature: [
-      { types: [constants.TYPE_OBJECT] },
-      { types: [constants.TYPE_STRING, constants.TYPE_ARRAY_STRING] },
+      {
+        types: [constants.TYPE_OBJECT],
+      },
+      {
+        types: [constants.TYPE_STRING, constants.TYPE_ARRAY_STRING],
+      },
+    ],
+  },
+  pick: {
+    _func: pick,
+    _signature: [
+      {
+        types: [constants.TYPE_OBJECT],
+      },
+      {
+        types: [constants.TYPE_STRING, constants.TYPE_ARRAY_STRING],
+      },
+    ],
+  },
+  to_entries: {
+    _func: toEntires,
+    _signature: [
+      {
+        types: [constants.TYPE_OBJECT],
+      },
+    ],
+  },
+  values: {
+    _func: values,
+    _signature: [
+      {
+        types: [constants.TYPE_OBJECT],
+      },
     ],
   },
 };

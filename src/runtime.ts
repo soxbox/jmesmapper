@@ -19,261 +19,207 @@ export class Runtime {
 
   constructor() {
     this.dynamicFunctions = new FunctionScope();
-    this.functionTable = {
-      // name: [function, <signature>]
-      // The <signature> can be:
-      //
-      // {
-      //   args: [[type1, type2], [type1, type2]],
-      //   variadic: true|false
-      // }
-      //
-      // Each arg in the arg list is a list of valid types
-      // (if the function is overloaded and supports multiple
-      // types.  If the type is "any" then no type checking
-      // occurs on the argument.  Variadic is optional
-      // and if not provided is assumed to be false.
-      abs: {
-        _func: mathFunctions.abs,
-        _signature: [{ types: [constants.TYPE_NUMBER] }],
+    this.functionTable = Object.assign(
+      {},
+      {
+        // name: [function, <signature>]
+        // The <signature> can be:
+        //
+        // {
+        //   args: [[type1, type2], [type1, type2]],
+        //   variadic: true|false
+        // }
+        //
+        // Each arg in the arg list is a list of valid types
+        // (if the function is overloaded and supports multiple
+        // types.  If the type is "any" then no type checking
+        // occurs on the argument.  Variadic is optional
+        // and if not provided is assumed to be false.
+        abs: {
+          _func: mathFunctions.abs,
+          _signature: [{ types: [constants.TYPE_NUMBER] }],
+        },
+        avg: {
+          _func: mathFunctions.avg,
+          _signature: [{ types: [constants.TYPE_ARRAY_NUMBER] }],
+        },
+        ceil: {
+          _func: mathFunctions.ceil,
+          _signature: [{ types: [constants.TYPE_NUMBER] }],
+        },
+        floor: {
+          _func: mathFunctions.floor,
+          _signature: [{ types: [constants.TYPE_NUMBER] }],
+        },
+        let: {
+          _func: conditionalFunctions.letFunction,
+          _signature: [
+            { types: [constants.TYPE_OBJECT] },
+            { types: [constants.TYPE_EXPREF] },
+          ],
+        },
+        length: {
+          _func: arrayFunctions.length,
+          _signature: [
+            {
+              types: [
+                constants.TYPE_STRING,
+                constants.TYPE_ARRAY,
+                constants.TYPE_OBJECT,
+              ],
+            },
+          ],
+        },
+        map: {
+          _func: arrayFunctions.map,
+          _signature: [
+            { types: [constants.TYPE_EXPREF] },
+            { types: [constants.TYPE_ARRAY] },
+          ],
+        },
+        max: {
+          _func: numberFunctions.max,
+          _signature: [
+            {
+              types: [constants.TYPE_ARRAY_NUMBER, constants.TYPE_ARRAY_STRING],
+            },
+          ],
+        },
+        merge: {
+          _func: objectFunctions.merge,
+          _signature: [{ types: [constants.TYPE_OBJECT], variadic: true }],
+        },
+        case: {
+          _func: conditionalFunctions.caseFunction,
+          _signature: [
+            {
+              types: [constants.TYPE_EXPREF, constants.TYPE_ARRAY_EXPREF],
+              variadic: true,
+            },
+          ],
+        },
+        if: {
+          _func: conditionalFunctions.ifFunction,
+          _signature: [
+            { types: [constants.TYPE_ANY] },
+            { types: [constants.TYPE_EXPREF] },
+            { types: [constants.TYPE_EXPREF], optional: true },
+          ],
+        },
+        define: {
+          _func: conditionalFunctions.define,
+          _signature: [
+            { types: [constants.TYPE_STRING] },
+            { types: [constants.TYPE_EXPREF] },
+          ],
+        },
+        is_defined: {
+          _func: conditionalFunctions.isDefined,
+          _signature: [{ types: [constants.TYPE_STRING] }],
+        },
+        find: {
+          _func: arrayFunctions.find,
+          _signature: [
+            { types: [constants.TYPE_ARRAY] },
+            { types: [constants.TYPE_EXPREF] },
+          ],
+        },
+        to_entries: {
+          _func: objectFunctions.toEntires,
+          _signature: [{ types: [constants.TYPE_OBJECT] }],
+        },
+        from_entries: {
+          _func: objectFunctions.fromEntires,
+          _signature: [{ types: [constants.TYPE_ARRAY_OBJECT] }],
+        },
+        max_by: {
+          _func: arrayFunctions.maxBy,
+          _signature: [
+            { types: [constants.TYPE_ARRAY] },
+            { types: [constants.TYPE_EXPREF] },
+          ],
+        },
+        sum: {
+          _func: mathFunctions.Sum,
+          _signature: [{ types: [constants.TYPE_ARRAY_NUMBER] }],
+        },
+        min: {
+          _func: numberFunctions.min,
+          _signature: [
+            {
+              types: [constants.TYPE_ARRAY_NUMBER, constants.TYPE_ARRAY_STRING],
+            },
+          ],
+        },
+        min_by: {
+          _func: arrayFunctions.minBy,
+          _signature: [
+            { types: [constants.TYPE_ARRAY] },
+            { types: [constants.TYPE_EXPREF] },
+          ],
+        },
+        type: {
+          _func: typeFunctions.type,
+          _signature: [{ types: [constants.TYPE_ANY] }],
+        },
+        keys: {
+          _func: objectFunctions.keys,
+          _signature: [{ types: [constants.TYPE_OBJECT] }],
+        },
+        values: {
+          _func: objectFunctions.values,
+          _signature: [{ types: [constants.TYPE_OBJECT] }],
+        },
+        sort: {
+          _func: arrayFunctions.sort,
+          _signature: [
+            {
+              types: [constants.TYPE_ARRAY_STRING, constants.TYPE_ARRAY_NUMBER],
+            },
+          ],
+        },
+        sort_by: {
+          _func: arrayFunctions.sortBy,
+          _signature: [
+            { types: [constants.TYPE_ARRAY] },
+            { types: [constants.TYPE_EXPREF] },
+          ],
+        },
+        group_by: {
+          _func: arrayFunctions.groupBy,
+          _signature: [
+            { types: [constants.TYPE_ARRAY] },
+            { types: [constants.TYPE_EXPREF] },
+          ],
+        },
+        join: {
+          _func: arrayFunctions.join,
+          _signature: [
+            { types: [constants.TYPE_STRING] },
+            { types: [constants.TYPE_ARRAY_STRING] },
+          ],
+        },
+        reverse: {
+          _func: arrayFunctions.reverse,
+          _signature: [
+            { types: [constants.TYPE_STRING, constants.TYPE_ARRAY] },
+          ],
+        },
+        to_array: {
+          _func: arrayFunctions.toArray,
+          _signature: [{ types: [constants.TYPE_ANY] }],
+        },
+        to_number: {
+          _func: numberFunctions.toNumber,
+          _signature: [{ types: [constants.TYPE_ANY] }],
+        },
+        not_null: {
+          _func: typeFunctions.notNull,
+          _signature: [{ types: [constants.TYPE_ANY], variadic: true }],
+        },
       },
-      avg: {
-        _func: mathFunctions.avg,
-        _signature: [{ types: [constants.TYPE_ARRAY_NUMBER] }],
-      },
-      ceil: {
-        _func: mathFunctions.ceil,
-        _signature: [{ types: [constants.TYPE_NUMBER] }],
-      },
-      contains: {
-        _func: stringFunctions.contains,
-        _signature: [
-          { types: [constants.TYPE_STRING, constants.TYPE_ARRAY] },
-          { types: [constants.TYPE_ANY] },
-        ],
-      },
-      ends_with: {
-        _func: stringFunctions.endsWith,
-        _signature: [
-          { types: [constants.TYPE_STRING] },
-          { types: [constants.TYPE_STRING] },
-        ],
-      },
-      floor: {
-        _func: mathFunctions.floor,
-        _signature: [{ types: [constants.TYPE_NUMBER] }],
-      },
-      let: {
-        _func: conditionalFunctions.letFunction,
-        _signature: [
-          { types: [constants.TYPE_OBJECT] },
-          { types: [constants.TYPE_EXPREF] },
-        ],
-      },
-      length: {
-        _func: arrayFunctions.length,
-        _signature: [
-          {
-            types: [
-              constants.TYPE_STRING,
-              constants.TYPE_ARRAY,
-              constants.TYPE_OBJECT,
-            ],
-          },
-        ],
-      },
-      map: {
-        _func: arrayFunctions.map,
-        _signature: [
-          { types: [constants.TYPE_EXPREF] },
-          { types: [constants.TYPE_ARRAY] },
-        ],
-      },
-      max: {
-        _func: numberFunctions.max,
-        _signature: [
-          { types: [constants.TYPE_ARRAY_NUMBER, constants.TYPE_ARRAY_STRING] },
-        ],
-      },
-      merge: {
-        _func: objectFunctions.merge,
-        _signature: [{ types: [constants.TYPE_OBJECT], variadic: true }],
-      },
-      case: {
-        _func: conditionalFunctions.caseFunction,
-        _signature: [
-          {
-            types: [constants.TYPE_EXPREF, constants.TYPE_ARRAY_EXPREF],
-            variadic: true,
-          },
-        ],
-      },
-      if: {
-        _func: conditionalFunctions.ifFunction,
-        _signature: [
-          { types: [constants.TYPE_ANY] },
-          { types: [constants.TYPE_EXPREF] },
-          { types: [constants.TYPE_EXPREF], optional: true },
-        ],
-      },
-      define: {
-        _func: conditionalFunctions.define,
-        _signature: [
-          { types: [constants.TYPE_STRING] },
-          { types: [constants.TYPE_EXPREF] },
-        ],
-      },
-      is_defined: {
-        _func: conditionalFunctions.isDefined,
-        _signature: [{ types: [constants.TYPE_STRING] }],
-      },
-      find: {
-        _func: arrayFunctions.find,
-        _signature: [
-          { types: [constants.TYPE_ARRAY] },
-          { types: [constants.TYPE_EXPREF] },
-        ],
-      },
-      to_entries: {
-        _func: objectFunctions.toEntires,
-        _signature: [{ types: [constants.TYPE_OBJECT] }],
-      },
-      from_entries: {
-        _func: objectFunctions.fromEntires,
-        _signature: [{ types: [constants.TYPE_ARRAY_OBJECT] }],
-      },
-      max_by: {
-        _func: arrayFunctions.maxBy,
-        _signature: [
-          { types: [constants.TYPE_ARRAY] },
-          { types: [constants.TYPE_EXPREF] },
-        ],
-      },
-      sum: {
-        _func: mathFunctions.Sum,
-        _signature: [{ types: [constants.TYPE_ARRAY_NUMBER] }],
-      },
-      starts_with: {
-        _func: stringFunctions.startsWith,
-        _signature: [
-          { types: [constants.TYPE_STRING] },
-          { types: [constants.TYPE_STRING] },
-        ],
-      },
-      min: {
-        _func: numberFunctions.min,
-        _signature: [
-          { types: [constants.TYPE_ARRAY_NUMBER, constants.TYPE_ARRAY_STRING] },
-        ],
-      },
-      min_by: {
-        _func: arrayFunctions.minBy,
-        _signature: [
-          { types: [constants.TYPE_ARRAY] },
-          { types: [constants.TYPE_EXPREF] },
-        ],
-      },
-      type: {
-        _func: typeFunctions.type,
-        _signature: [{ types: [constants.TYPE_ANY] }],
-      },
-      trim: {
-        _func: stringFunctions.trim,
-        _signature: [{ types: [constants.TYPE_STRING] }],
-      },
-      upper: {
-        _func: stringFunctions.upper,
-        _signature: [{ types: [constants.TYPE_STRING] }],
-      },
-      lower: {
-        _func: stringFunctions.lower,
-        _signature: [{ types: [constants.TYPE_STRING] }],
-      },
-      replace: {
-        _func: stringFunctions.replace,
-        _signature: [
-          { types: [constants.TYPE_STRING] },
-          { types: [constants.TYPE_STRING, constants.TYPE_REGEXP] },
-          { types: [constants.TYPE_STRING] },
-        ],
-      },
-      words: {
-        _func: stringFunctions.wordsFunction,
-        _signature: [
-          { types: [constants.TYPE_STRING] },
-          {
-            types: [constants.TYPE_STRING, constants.TYPE_REGEXP],
-            optional: true,
-          },
-        ],
-      },
-      upper_first: {
-        _func: stringFunctions.upperFirstFunction,
-        _signature: [{ types: [constants.TYPE_STRING] }],
-      },
-      keys: {
-        _func: objectFunctions.keys,
-        _signature: [{ types: [constants.TYPE_OBJECT] }],
-      },
-      values: {
-        _func: objectFunctions.values,
-        _signature: [{ types: [constants.TYPE_OBJECT] }],
-      },
-      sort: {
-        _func: arrayFunctions.sort,
-        _signature: [
-          { types: [constants.TYPE_ARRAY_STRING, constants.TYPE_ARRAY_NUMBER] },
-        ],
-      },
-      sort_by: {
-        _func: arrayFunctions.sortBy,
-        _signature: [
-          { types: [constants.TYPE_ARRAY] },
-          { types: [constants.TYPE_EXPREF] },
-        ],
-      },
-      split: {
-        _func: stringFunctions.split,
-        _signature: [
-          { types: [constants.TYPE_STRING] },
-          { types: [constants.TYPE_STRING, constants.TYPE_REGEXP] },
-        ],
-      },
-      group_by: {
-        _func: arrayFunctions.groupBy,
-        _signature: [
-          { types: [constants.TYPE_ARRAY] },
-          { types: [constants.TYPE_EXPREF] },
-        ],
-      },
-      join: {
-        _func: arrayFunctions.join,
-        _signature: [
-          { types: [constants.TYPE_STRING] },
-          { types: [constants.TYPE_ARRAY_STRING] },
-        ],
-      },
-      reverse: {
-        _func: arrayFunctions.reverse,
-        _signature: [{ types: [constants.TYPE_STRING, constants.TYPE_ARRAY] }],
-      },
-      to_array: {
-        _func: arrayFunctions.toArray,
-        _signature: [{ types: [constants.TYPE_ANY] }],
-      },
-      to_string: {
-        _func: stringFunctions.toString,
-        _signature: [{ types: [constants.TYPE_ANY] }],
-      },
-      to_number: {
-        _func: numberFunctions.toNumber,
-        _signature: [{ types: [constants.TYPE_ANY] }],
-      },
-      not_null: {
-        _func: typeFunctions.notNull,
-        _signature: [{ types: [constants.TYPE_ANY], variadic: true }],
-      },
-    };
+      stringFunctions.definition
+    );
   }
 
   setInterpreter(interpreter: TreeInterpreter) {

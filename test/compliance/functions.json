@@ -1847,5 +1847,239 @@
             }
             
         ]
+    },
+    {
+        "given": {
+            "text": "Lorem Ipsum is simply dummy text."
+        },
+        "cases": [
+            {
+                "expression": "substr(text, `2`)",
+                "result": "rem Ipsum is simply dummy text."
+            },
+            {
+                "expression": "substr(text, `2`, `4`)",
+                "result": "rem "
+            },
+            {
+                "expression": "substr(text, `0`, `4`)",
+                "result": "Lore"
+            },
+            {
+                "expression": "substr(text, '0', `4`)",
+                "error": "TypeError"
+            },
+            {
+                "expression": "substr(text, `0`, '4')",
+                "error": "TypeError"
+            },
+            {
+                "expression": "substr(`1`, `0`)",
+                "error": "TypeError"
+            }
+        ]
+    },
+    {
+        "given": {
+            "text": "Lorem Ipsum is simply dummy text."
+        },
+        "cases": [
+            {
+                "expression": "camel_case('User ID')",
+                "result": "userId"
+            },
+            {
+                "expression": "camel_case('---user---ID----')",
+                "result": "userId"
+            },
+            {
+                "expression": "camel_case(`5`)",
+                "error": "TypeError"
+            }
+        ]
+    },
+    {
+        "given": {
+            "text": "Lorem Ipsum is simply dummy text."
+        },
+        "cases": [
+            {
+                "expression": "kebab_case('User ID')",
+                "result": "user-id"
+            },
+            {
+                "expression": "kebab_case('---user---ID----')",
+                "result": "user-id"
+            },
+            {
+                "expression": "kebab_case(`5`)",
+                "error": "TypeError"
+            }
+        ]
+    },
+    {
+        "given": {
+            "text": "Lorem Ipsum is simply dummy text."
+        },
+        "cases": [
+            {
+                "expression": "pad('abc', `8`)",
+                "result": "  abc   "
+            },
+            {
+                "expression": "pad('abc', `8`, '_-')",
+                "result": "_-abc_-_"
+            },
+            {
+                "expression": "pad(`0`, `1`)",
+                "error": "TypeError"
+            },
+            {
+                "expression": "pad('abc', '1')",
+                "error": "TypeError"
+            },
+            {
+                "expression": "pad('abc', `8`, `1`)",
+                "error": "TypeError"
+            }
+        ]
+    },
+    {
+        "given": {
+            "text": "Lorem Ipsum is simply dummy text."
+        },
+        "cases": [
+            {
+                "expression": "pad_start('abc', `6`)",
+                "result": "   abc"
+            },
+            {
+                "expression": "pad_start('abc', `6`, '_-')",
+                "result": "_-_abc"
+            },
+            {
+                "expression": "pad_start(`0`, `1`)",
+                "error": "TypeError"
+            },
+            {
+                "expression": "pad_start('abc', '1')",
+                "error": "TypeError"
+            },
+            {
+                "expression": "pad_start('abc', `8`, `1`)",
+                "error": "TypeError"
+            }
+        ]
+    },
+    {
+        "given": {
+            "text": "Lorem Ipsum is simply dummy text."
+        },
+        "cases": [
+            {
+                "expression": "pad_end('abc', `6`)",
+                "result": "abc   "
+            },
+            {
+                "expression": "pad_end('abc', `6`, '_-')",
+                "result": "abc_-_"
+            },
+            {
+                "expression": "pad_end(`0`, `1`)",
+                "error": "TypeError"
+            },
+            {
+                "expression": "pad_end('abc', '1')",
+                "error": "TypeError"
+            },
+            {
+                "expression": "pad_end('abc', `8`, `1`)",
+                "error": "TypeError"
+            }
+        ]
+    },
+    {
+        "given": {
+            "text": "fred, barney, & pebbles"
+        },
+        "cases": [
+            {
+                "expression": "escape(text)",
+                "result": "fred, barney, &amp; pebbles"
+            },
+            {
+                "expression": "escape(`1`)",
+                "error": "TypeError"
+            }
+        ]
+    },
+    {
+        "given": {
+            "text": "fred, barney, &amp; pebbles"
+        },
+        "cases": [
+            {
+                "expression": "unescape(text)",
+                "result": "fred, barney, & pebbles"
+            },
+            {
+                "expression": "unescape(`1`)",
+                "error": "TypeError"
+            }
+        ]
+    },
+    {
+        "given": {
+            "text": "fred, barney, &amp; pebbles"
+        },
+        "cases": [
+            {
+                "expression": "repeat('*', `3`)",
+                "result": "***"
+            },
+            {
+                "expression": "repeat('abc', `2`)",
+                "result": "abcabc"
+            },
+            {
+                "expression": "repeat('abc', '2')",
+                "error": "TypeError"
+            },
+            {
+                "expression": "repeat(`1`, `1`)",
+                "error": "TypeError"
+            }
+        ]
+    },
+    {
+        "given": {
+            "text": "hi-diddly-ho there, neighborino"
+        },
+        "cases": [
+            {
+                "expression": "truncate(text)",
+                "result": "hi-diddly-ho there, neighbo..."
+            },
+            {
+                "expression": "truncate(text, {length: `24`, separator: ' '})",
+                "result": "hi-diddly-ho there,..."
+            },
+            {
+                "expression": "truncate(text, {length: `24`, separator: /,? +/})",
+                "result": "hi-diddly-ho there..."
+            },
+            {
+                "expression": "truncate(text, {omission: ' [...]'})",
+                "result": "hi-diddly-ho there, neig [...]"
+            },
+            {
+                "expression": "truncate(text, `1`)",
+                "error": "TypeError"
+            },
+            {
+                "expression": "truncate(`1`)",
+                "error": "TypeError"
+            }
+        ]
     }
 ]

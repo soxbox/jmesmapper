@@ -12,12 +12,16 @@ import * as dateFunctions from "./functions/date-functions";
 import * as conditionalFunctions from './functions/conditional-functions';
 import { IAst, TokenType, IFunctionSignature, IFunctionTable } from './types';
 
+interface IRuntimeOptions {
+  definition?: IFunctionTable
+}
+
 export class Runtime {
   _interpreter?: TreeInterpreter;
   functionTable: IFunctionTable;
   dynamicFunctions: FunctionScope;
 
-  constructor() {
+  constructor(options: IRuntimeOptions = {}) {
     this.dynamicFunctions = new FunctionScope();
     this.functionTable = Object.assign(
       {},
@@ -96,7 +100,8 @@ export class Runtime {
       arrayFunctions.definition,
       objectFunctions.definition,
       typeFunctions.definition,
-      dateFunctions.definition
+      dateFunctions.definition,
+      options.definition
     );
   }
 

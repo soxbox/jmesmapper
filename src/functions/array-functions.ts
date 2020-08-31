@@ -298,6 +298,25 @@ export function every(runtime: Runtime, resolvedArgs: any[]): boolean {
   return true;
 }
 
+export function uniqueBy(runtime: Runtime, resolvedArgs: any[]): any[] {
+  const exprefNode = resolvedArgs[1];
+  const data = resolvedArgs[0];
+  var keyFunction = runtime.createKeyFunction(exprefNode, [
+    constants.TYPE_NUMBER,
+    constants.TYPE_STRING,
+    constants.TYPE_BOOLEAN,
+    constants.TYPE_NULL,
+  ]);
+  const result: { [key: string]: any } = {};
+  for (let i = 0; i < data.length; i++) {
+    const key = keyFunction(data[i]);
+    if (!Object.prototype.hasOwnProperty.call(result, key)) {
+      result[key] = data[i];
+    }
+  }
+  return _.values(result);
+}
+
 export const definition: IFunctionTable = {
   chunk: {
     _func: chunk,
@@ -501,6 +520,13 @@ export const definition: IFunctionTable = {
       {
         types: [constants.TYPE_ANY],
       },
+    ],
+  },
+  unique_by: {
+    _func: uniqueBy,
+    _signature: [
+      { types: [constants.TYPE_ARRAY] },
+      { types: [constants.TYPE_EXPREF] },
     ],
   },
 };

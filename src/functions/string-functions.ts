@@ -2,6 +2,7 @@ import { Runtime } from '../runtime';
 import _ from 'lodash';
 import * as constants from '../constants';
 import { IFunctionTable } from '../types';
+import {v4 as uuidv4} from "uuid";
 
 export function contains(_runtime: Runtime, resolvedArgs: any[]): boolean {
   return resolvedArgs[0].indexOf(resolvedArgs[1]) >= 0;
@@ -101,6 +102,10 @@ export function truncate(_runtime: Runtime, resolvedArgs: any[]): string {
   ]);
 
   return _.truncate(resolvedArgs[0], options);
+}
+
+export function uuid(_runtime: Runtime, resolvedArgs: any[]): string {
+  return uuidv4()
 }
 
 export const definition: IFunctionTable = {
@@ -266,6 +271,10 @@ export const definition: IFunctionTable = {
     _signature: [{
       types: [constants.TYPE_STRING]
     }]
+  },
+  uuid: {
+    _func: uuid,
+    _signature: []
   },
   words: {
     _func: words,

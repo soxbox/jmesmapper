@@ -2345,6 +2345,10 @@
       {
         "expression": "is_empty(object)",
         "result": false
+      },
+      {
+        "expression": "!is_empty(uuid())",
+        "result": true
       }
     ]
   },

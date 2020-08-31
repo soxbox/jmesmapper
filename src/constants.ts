@@ -58,20 +58,20 @@ export const basicTokens: IStringObject = {
   '{': TokenType.LBRACE,
   '}': TokenType.RBRACE,
   '@': TokenType.CURRENT,
-  '*': TokenType.STAR
+  '*': TokenType.STAR,
 };
 
 export const operatorStartToken: IBooleanObject = {
   '!': true,
   '<': true,
   '=': true,
-  '>': true
+  '>': true,
 };
 
 export const skipChars: IBooleanObject = {
   '\t': true,
   '\n': true,
-  ' ': true
+  ' ': true,
 };
 
 export const bindingPower: INumberObject = {

@@ -1,8 +1,8 @@
 const fs = require('fs')
 const path = require('path')
 const assert = require('assert')
-const jmespath = require('../')
-const search = jmespath.search
+const jmesmapper = require('../')
+const search = jmesmapper.search
 
 // Compliance tests that aren't supported yet.
 const notImplementedYet = []

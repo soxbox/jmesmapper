@@ -247,7 +247,7 @@ export class TreeInterpreter {
         // Tag the node with a specific attribute so the type
         // checker verify the type.
         if (refNode) {
-          refNode.jmespathType = TokenType.EXPREF;
+          refNode.jmesmapperType = TokenType.EXPREF;
           refNode.context = value;
         }
         return refNode;

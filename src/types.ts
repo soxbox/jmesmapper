@@ -1,4 +1,4 @@
-import { Runtime } from "./runtime";
+import { Runtime } from './runtime';
 
 export interface IToken {
   type: string;
@@ -86,7 +86,7 @@ export type KeyValuePairType = {
   type: AstTypes.KEY_VALUE_PAIR;
   name: string;
   value: any;
-  jmespathType?: TokenType.EXPREF;
+  jmesmapperType?: TokenType.EXPREF;
   context?: any;
 };
 
@@ -94,14 +94,14 @@ export type IAst =
   | {
       type: AstTypes.FIELD | AstTypes.SCOPE;
       name: string;
-      jmespathType?: TokenType.EXPREF;
+      jmesmapperType?: TokenType.EXPREF;
       context?: any;
     }
   | {
       type: AstTypes.FUNCTION | AstTypes.COMPARATOR;
       name: string;
       children: Array<IAst | undefined | null>;
-      jmespathType?: TokenType.EXPREF;
+      jmesmapperType?: TokenType.EXPREF;
       context?: any;
     }
   | {
@@ -119,30 +119,30 @@ export type IAst =
         | AstTypes.FLATTEN
         | AstTypes.PIPE;
       children: Array<IAst | undefined | null>;
-      jmespathType?: TokenType.EXPREF;
+      jmesmapperType?: TokenType.EXPREF;
       context?: any;
     }
   | {
       type: AstTypes.MULTI_SELECT_HASH;
       children: KeyValuePairType[];
-      jmespathType?: TokenType.EXPREF;
+      jmesmapperType?: TokenType.EXPREF;
       context?: any;
     }
   | {
       type: AstTypes.SLICE;
       children: Array<number | null>;
-      jmespathType?: TokenType.EXPREF;
+      jmesmapperType?: TokenType.EXPREF;
       context?: any;
     }
   | {
       type: AstTypes.LITERAL | AstTypes.INDEX | AstTypes.REGULAREXPRESSION;
       value: any;
-      jmespathType?: TokenType.EXPREF;
+      jmesmapperType?: TokenType.EXPREF;
       context?: any;
     }
   | {
       type: AstTypes.IDENTITY | AstTypes.CURRENT;
-      jmespathType?: TokenType.EXPREF;
+      jmesmapperType?: TokenType.EXPREF;
       context?: any;
     }
   | KeyValuePairType;

@@ -7,7 +7,7 @@ export function letFunction(runtime: Runtime, resolvedArgs: IAst[]): any {
   const scope = resolvedArgs[0];
   const exprefNode = resolvedArgs[1];
   const interpreter = runtime.getInterpreter();
-  if (exprefNode.jmespathType !== 'Expref') {
+  if (exprefNode.jmesmapperType !== 'Expref') {
     throw new Error('TypeError: expected ExpreRef, received ' + exprefNode.type);
   }
   interpreter.scopeChain.pushScope(scope);

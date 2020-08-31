@@ -1,9 +1,9 @@
 const assert = require('assert');
-const jmespath = require('../');
-const tokenize = jmespath.tokenize;
-const compile = jmespath.compile;
-const strictDeepEqual = jmespath.strictDeepEqual;
-const constants = jmespath.constants;
+const jmesmapper = require('../');
+const tokenize = jmesmapper.tokenize;
+const compile = jmesmapper.compile;
+const strictDeepEqual = jmesmapper.strictDeepEqual;
+const constants = jmesmapper.constants;
 
 describe('tokenize', function () {
   it('should tokenize unquoted identifier', function () {
@@ -210,7 +210,7 @@ describe('strictDeepEqual', function () {
 describe('search', function () {
   it('should throw a readable error when invalid arguments are provided to a function', function () {
     try {
-      jmespath.search([], 'length(`null`)');
+      jmesmapper.search([], 'length(`null`)');
     } catch (e) {
       assert(
         e.message.search('expected argument 1 to be type string,array,object'),
@@ -241,6 +241,6 @@ describe('custom function search', function () {
       },
     };
 
-    assert(jmespath.search([], 'test_function(`null`)', { definition }), true);
+    assert(jmesmapper.search([], 'test_function(`null`)', { definition }), true);
   });
 });

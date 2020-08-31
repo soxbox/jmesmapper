@@ -198,8 +198,8 @@ export class Runtime {
         return constants.TYPE_REGEXP;
       case '[object Object]':
         // Check if it's an expref.  If it has, it's been
-        // tagged with a jmespathType attr of 'Expref';
-        if (obj.jmespathType === TokenType.EXPREF) {
+        // tagged with a jmesmapperType attr of 'Expref';
+        if (obj.jmesmapperType === TokenType.EXPREF) {
           return constants.TYPE_EXPREF;
         } else {
           return constants.TYPE_OBJECT;

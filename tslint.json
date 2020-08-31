@@ -2,6 +2,15 @@
   "extends": ["tslint:recommended", "tslint-config-prettier"],
   "rules": {
     "object-literal-sort-keys": [true, "ignore-case", "locale-compare", "shorthand-first"],
-    "no-empty": [true, "allow-empty-functions"]
+    "no-empty": [true, "allow-empty-functions"],
+    "array-type": [true, "array-simple"],
+    "prefer-for-of": false,
+    "variable-name": {
+        "options": [
+          "check-format",
+          "allow-leading-underscore",
+          "allow-pascal-case"
+        ]
+      }
   }
 }

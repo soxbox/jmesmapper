@@ -297,8 +297,8 @@ export const definition: IFunctionTable = {
         types: [constants.TYPE_STRING],
       },
       {
-        types: [constants.TYPE_OBJECT],
         optional: true,
+        types: [constants.TYPE_OBJECT],
       },
     ],
   },

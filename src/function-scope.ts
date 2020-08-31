@@ -10,13 +10,13 @@ export class FunctionScope {
       throw new Error(`Function ${name} cannot be redefined`);
     }
     this.functionEntries[name] = {
-      _signature: [{ types: [constants.TYPE_ANY] }],
-      _func: function (runtime: Runtime, resolvedArgs: any[]) {
+      _func: (runtime: Runtime, resolvedArgs: any[]) => {
         // @ts-ignore
         const interpreter = runtime.getInterpreter();
         const data = resolvedArgs[0];
         return interpreter.visit(exprefNode, data);
       },
+      _signature: [{ types: [constants.TYPE_ANY] }],
     };
   }
 

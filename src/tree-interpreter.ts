@@ -72,7 +72,7 @@ export class TreeInterpreter {
         const start = computed[0];
         const stop = computed[1];
         const step = computed[2];
-        let result = [];
+        const result = [];
         if (step > 0) {
           for (let i = start; i < stop; i += step) {
             result.push(value[i]);
@@ -258,7 +258,7 @@ export class TreeInterpreter {
   }
 
   computeSliceParams(arrayLength: number, sliceParams: Array<number | null>): number[] {
-    let step: number = sliceParams[2] === null ? 1 : sliceParams[2];
+    const step: number = sliceParams[2] === null ? 1 : sliceParams[2];
 
     if (step === 0) {
       const error = new Error('Invalid slice, step cannot be 0');

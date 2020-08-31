@@ -8,21 +8,21 @@ export function abs(_runtime: Runtime, resolvedArgs: any[]): number {
 }
 
 export function avg(_runtime: Runtime, resolvedArgs: any[]): number {
-  let sum = 0;
+  let sumNum = 0;
   const inputArray = resolvedArgs[0];
   for (let i = 0; i < inputArray.length; i++) {
-    sum += inputArray[i];
+    sumNum += inputArray[i];
   }
-  return sum / inputArray.length;
+  return sumNum / inputArray.length;
 }
 
 export function sum(_runtime: Runtime, resolvedArgs: any[]): number {
-  let sum = 0;
+  let sumNum = 0;
   const listToSum = resolvedArgs[0];
   for (let i = 0; i < listToSum.length; i++) {
-    sum += listToSum[i];
+    sumNum += listToSum[i];
   }
-  return sum;
+  return sumNum;
 }
 
 export function add(_runtime: Runtime, resolvedArgs: any[]): number {
@@ -130,8 +130,8 @@ export const definition: IFunctionTable = {
         types: [constants.TYPE_NUMBER],
       },
       {
-        types: [constants.TYPE_NUMBER],
         optional: true,
+        types: [constants.TYPE_NUMBER],
       },
     ],
   },

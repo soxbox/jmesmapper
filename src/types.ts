@@ -1,3 +1,5 @@
+import { Runtime } from "./runtime";
+
 export interface IToken {
   type: string;
   value?: any;
@@ -11,7 +13,7 @@ export interface IFunctionSignature {
 }
 
 export interface IFunctionTableType {
-  _func: Function;
+  _func: (runtime: Runtime, resolvedArgs: any[]) => any;
   _signature: IFunctionSignature[];
 }
 

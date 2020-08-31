@@ -36,14 +36,16 @@ export function dateFormat(_runtime: Runtime, resolvedArgs: any[]): string | nul
 }
 
 function dateCurrent(_runtime: Runtime, resolvedArgs: any[]): Date {
-  console.log('hit');
   return DateTime.utc().toJSDate();
 }
 
 export const definition: IFunctionTable = {
-  now: {
-    _func: dateCurrent,
-    _signature: [],
+  date_format: {
+    _func: dateFormat,
+    _signature: [
+      { types: [constants.TYPE_DATE, constants.TYPE_NULL] },
+      { types: [constants.TYPE_STRING], optional: true },
+    ],
   },
   date_parse: {
     _func: dateParse,
@@ -52,11 +54,8 @@ export const definition: IFunctionTable = {
       { types: [constants.TYPE_STRING], optional: true },
     ],
   },
-  date_format: {
-    _func: dateFormat,
-    _signature: [
-      { types: [constants.TYPE_DATE, constants.TYPE_NULL] },
-      { types: [constants.TYPE_STRING], optional: true },
-    ],
+  now: {
+    _func: dateCurrent,
+    _signature: [],
   },
 };

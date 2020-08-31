@@ -25,9 +25,9 @@ export class Parser {
     const lexer = new Lexer();
     const tokens = lexer.tokenize(expression);
     tokens.push({
+      start: expression.length,
       type: TokenType.EOF,
       value: '',
-      start: expression.length,
     });
     this.tokens = tokens;
   }
@@ -78,8 +78,8 @@ export class Parser {
         return { type: AstTypes.FIELD, name: token && token.value };
       case TokenType.NOT:
         return {
-          type: AstTypes.NOT_EXPRESSION,
           children: [this.expression(constants.bindingPower.Not)],
+          type: AstTypes.NOT_EXPRESSION,
         };
       case TokenType.STAR: {
         const left: IAst = { type: AstTypes.IDENTITY };
@@ -90,7 +90,7 @@ export class Parser {
               { type: AstTypes.IDENTITY }
             : this._parseProjectionRHS(constants.bindingPower.Star);
 
-        return { type: AstTypes.VALUE_PROJECTION, children: [left, right] };
+        return { children: [left, right], type: AstTypes.VALUE_PROJECTION };
       }
       case TokenType.FILTER:
         return this.led(token.type, { type: AstTypes.IDENTITY });
@@ -98,11 +98,11 @@ export class Parser {
         return this._parseMultiselectHash();
       case TokenType.FLATTEN: {
         const left: IAst = {
-          type: AstTypes.FLATTEN,
           children: [{ type: AstTypes.IDENTITY }],
+          type: AstTypes.FLATTEN,
         };
         const right = this._parseProjectionRHS(constants.bindingPower.Flatten);
-        return { type: AstTypes.PROJECTION, children: [left, right] };
+        return { children: [left, right], type: AstTypes.PROJECTION };
       }
       case TokenType.LBRACKET:
         if (this._lookahead(0) === TokenType.NUMBER || this._lookahead(0) === TokenType.COLON) {
@@ -113,8 +113,8 @@ export class Parser {
           this._advance();
           const right = this._parseProjectionRHS(constants.bindingPower.Star);
           return {
-            type: AstTypes.PROJECTION,
             children: [{ type: AstTypes.IDENTITY }, right],
+            type: AstTypes.PROJECTION,
           };
         }
         return this._parseMultiselectList();
@@ -122,13 +122,13 @@ export class Parser {
         return { type: AstTypes.CURRENT };
       case TokenType.EXPREF:
         return {
-          type: AstTypes.EXPRESSION_REFERENCE,
           children: [this.expression(constants.bindingPower.Expref)],
+          type: AstTypes.EXPRESSION_REFERENCE,
         };
       case TokenType.LPAREN: {
         const args = [];
         while (this._lookahead(0) !== TokenType.RPAREN) {
-          let expression: IAst | undefined = undefined;
+          let expression: IAst | undefined;
           if (this._lookahead(0) === TokenType.CURRENT) {
             expression = { type: AstTypes.CURRENT };
             this._advance();
@@ -151,30 +151,30 @@ export class Parser {
         const rbp = constants.bindingPower.Dot;
         if (this._lookahead(0) !== TokenType.STAR) {
           return {
-            type: AstTypes.SUB_EXPRESSION,
             children: [left, this._parseDotRHS(rbp)],
+            type: AstTypes.SUB_EXPRESSION,
           };
         }
         // Creating a projection.
         this._advance();
         return {
-          type: AstTypes.VALUE_PROJECTION,
           children: [left, this._parseProjectionRHS(rbp)],
+          type: AstTypes.VALUE_PROJECTION,
         };
       case TokenType.PIPE:
         return {
-          type: AstTypes.PIPE,
           children: [left, this.expression(constants.bindingPower.Pipe)],
+          type: AstTypes.PIPE,
         };
       case TokenType.OR:
         return {
-          type: AstTypes.OR_EXPRESSION,
           children: [left, this.expression(constants.bindingPower.Or)],
+          type: AstTypes.OR_EXPRESSION,
         };
       case TokenType.AND:
         return {
-          type: AstTypes.AND_EXPRESSION,
           children: [left, this.expression(constants.bindingPower.And)],
+          type: AstTypes.AND_EXPRESSION,
         };
       case TokenType.LPAREN:
         // @ts-ignore
@@ -194,7 +194,7 @@ export class Parser {
           args.push(expression);
         }
         this._match(TokenType.RPAREN);
-        return { type: AstTypes.FUNCTION, name, children: args };
+        return { name, children: args, type: AstTypes.FUNCTION };
       case TokenType.FILTER:
         const condition = this.expression(0);
         this._match(TokenType.RBRACKET);
@@ -203,13 +203,13 @@ export class Parser {
             ? { type: AstTypes.IDENTITY }
             : this._parseProjectionRHS(constants.bindingPower.Filter);
         return {
-          type: AstTypes.FILTER_PROJECTION,
           children: [left, right, condition],
+          type: AstTypes.FILTER_PROJECTION,
         };
       case TokenType.FLATTEN:
-        const leftNode: IAst = { type: AstTypes.FLATTEN, children: [left] };
+        const leftNode: IAst = { children: [left], type: AstTypes.FLATTEN };
         const rightNode = this._parseProjectionRHS(constants.bindingPower.Flatten);
-        return { type: AstTypes.PROJECTION, children: [leftNode, rightNode] };
+        return { children: [leftNode, rightNode], type: AstTypes.PROJECTION };
       case TokenType.EQ:
       case TokenType.NE:
       case TokenType.GT:
@@ -225,8 +225,8 @@ export class Parser {
         this._match(TokenType.STAR);
         this._match(TokenType.RBRACKET);
         return {
-          type: AstTypes.PROJECTION,
           children: [left, this._parseProjectionRHS(constants.bindingPower.Star)],
+          type: AstTypes.PROJECTION,
         };
       default:
         throw this._errorToken(this._lookaheadToken(0));
@@ -266,13 +266,13 @@ export class Parser {
 
   _projectIfSlice(left: IAst, right: IAst): IAst {
     const indexExpr: IAst = {
-      type: AstTypes.INDEX_EXPRESSION,
       children: [left, right],
+      type: AstTypes.INDEX_EXPRESSION,
     };
     if (right.type === 'Slice') {
       return {
-        type: AstTypes.PROJECTION,
         children: [indexExpr, this._parseProjectionRHS(constants.bindingPower.Star)],
+        type: AstTypes.PROJECTION,
       };
     } else {
       return indexExpr;
@@ -302,17 +302,17 @@ export class Parser {
     }
     this._match(TokenType.RBRACKET);
     return {
-      type: AstTypes.SLICE,
       children: parts,
+      type: AstTypes.SLICE,
     };
   }
 
   _parseComparator(left: IAst, comparator: string): IAst {
     const right = this.expression(constants.bindingPower[comparator]);
     return {
-      type: AstTypes.COMPARATOR,
-      name: comparator,
       children: [left, right],
+      name: comparator,
+      type: AstTypes.COMPARATOR,
     };
   }
 
@@ -366,7 +366,7 @@ export class Parser {
       }
     }
     this._match(TokenType.RBRACKET);
-    return { type: AstTypes.MULTI_SELECT_LIST, children: expressions };
+    return { children: expressions, type: AstTypes.MULTI_SELECT_LIST };
   }
 
   _parseMultiselectHash(): IAst {
@@ -382,9 +382,9 @@ export class Parser {
       this._match(TokenType.COLON);
       const value = this.expression(0);
       const node: KeyValuePairType = {
-        type: AstTypes.KEY_VALUE_PAIR,
-        name: keyName,
         value,
+        name: keyName,
+        type: AstTypes.KEY_VALUE_PAIR,
       };
       pairs.push(node);
       if (this._lookahead(0) === TokenType.COMMA) {
@@ -394,6 +394,6 @@ export class Parser {
         break;
       }
     }
-    return { type: AstTypes.MULTI_SELECT_HASH, children: pairs };
+    return { children: pairs, type: AstTypes.MULTI_SELECT_HASH };
   }
 }

@@ -176,7 +176,7 @@ export function sortBy(runtime: Runtime, resolvedArgs: any[]): any[] {
   for (let i = 0; i < sortedArray.length; i++) {
     decorated.push([i, sortedArray[i]]);
   }
-  decorated.sort(function (a, b) {
+  decorated.sort((a, b) => {
     const exprA = interpreter.visit(exprefNode, a[1]);
     const exprB = interpreter.visit(exprefNode, b[1]);
     if (runtime._getTypeName(exprA) !== requiredType) {
@@ -278,7 +278,7 @@ export function every(runtime: Runtime, resolvedArgs: any[]): boolean {
 export function uniqueBy(runtime: Runtime, resolvedArgs: any[]): any[] {
   const exprefNode = resolvedArgs[1];
   const data = resolvedArgs[0];
-  var keyFunction = runtime.createKeyFunction(exprefNode, [
+  const keyFunction = runtime.createKeyFunction(exprefNode, [
     constants.TYPE_NUMBER,
     constants.TYPE_STRING,
     constants.TYPE_BOOLEAN,

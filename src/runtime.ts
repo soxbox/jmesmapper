@@ -112,14 +112,14 @@ export class Runtime {
         }
       }
       // supports one optional type at the end of the arguments
-      if (typeMatched == false && signature[i].optional && i === signature.length - 1) {
+      if (typeMatched === false && signature[i].optional && i === signature.length - 1) {
         if (signature.length > args.length) {
           typeMatched = true;
         }
       }
       if (!typeMatched) {
         const expected = currentSpec
-          .map(function (typeIdentifier) {
+          .map((typeIdentifier) => {
             return constants.TYPE_NAME_TABLE[typeIdentifier];
           })
           .join(',');
@@ -208,11 +208,10 @@ export class Runtime {
   }
 
   createKeyFunction(exprefNode: IAst, allowedTypes: Array<number | undefined>) {
-    const that = this;
     const interpreter = this.getInterpreter();
-    const keyFunc = function (x: any) {
+    const keyFunc = (x: any) => {
       const current = interpreter.visit(exprefNode, x);
-      const type = that._getTypeName(current);
+      const type = this._getTypeName(current);
       if (allowedTypes.indexOf(type) < 0) {
         const msg = 'TypeError: expected one of ' + allowedTypes + ', received ' + type;
         throw new Error(msg);

@@ -8,7 +8,9 @@ export function merge(_runtime: Runtime, resolvedArgs: any[]): { [key: string]: 
   for (let i = 0; i < resolvedArgs.length; i++) {
     const current = resolvedArgs[i];
     for (const key in current) {
-      merged[key] = current[key];
+      if (Object.prototype.hasOwnProperty.call(current, key)) {
+        merged[key] = current[key];
+      }
     }
   }
   return merged;
@@ -16,13 +18,14 @@ export function merge(_runtime: Runtime, resolvedArgs: any[]): { [key: string]: 
 
 export function toEntires(_runtime: Runtime, resolvedArgs: any[]): any {
   const data = resolvedArgs[0];
-  const keys = Object.keys(data);
+  const objKeys = Object.keys(data);
   const entries = [];
-  for (let i = 0; i < keys.length; i++) {
-    if (Object.prototype.hasOwnProperty.call(data, keys[i])) {
+  for (let i = 0; i < objKeys.length; i++) {
+    const key = objKeys[i];
+    if (Object.prototype.hasOwnProperty.call(data, key)) {
       entries.push({
-        key: keys[i],
-        value: data[keys[i]],
+        key,
+        value: data[key],
       });
     }
   }
@@ -42,12 +45,12 @@ export function keys(_runtime: Runtime, resolvedArgs: any[]): string[] {
 
 export function values(_runtime: Runtime, resolvedArgs: any[]): any[] {
   const obj = resolvedArgs[0];
-  const keys = Object.keys(obj);
-  const values = [];
-  for (let i = 0; i < keys.length; i++) {
-    values.push(obj[keys[i]]);
+  const objKeys = Object.keys(obj);
+  const valuesArr = [];
+  for (let i = 0; i < objKeys.length; i++) {
+    valuesArr.push(obj[objKeys[i]]);
   }
-  return values;
+  return valuesArr;
 }
 
 export function pick(_runtime: Runtime, resolvedArgs: any[]): object {

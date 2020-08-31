@@ -109,10 +109,14 @@ export function objValues(obj: ObjectType): any[] {
 export function merge(a: ObjectType, b: ObjectType): ObjectType {
   const merged: ObjectType = {};
   for (const key in a) {
-    merged[key] = a[key];
+    if (Object.prototype.hasOwnProperty.call(a, key)) {
+      merged[key] = a[key];
+    }
   }
   for (const key2 in b) {
-    merged[key2] = b[key2];
+    if (Object.prototype.hasOwnProperty.call(b, key2)) {
+      merged[key2] = b[key2];
+    }
   }
   return merged;
 }

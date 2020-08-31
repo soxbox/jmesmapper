@@ -11,26 +11,24 @@ export class Lexer {
     this._current = 0;
     let start;
     let identifier;
-    let token;
     while (this._current < stream.length) {
       if (helpers.isAlpha(stream[this._current])) {
         start = this._current;
         identifier = this._consumeUnquotedIdentifier(stream);
         tokens.push({
+          start,
           type: TokenType.UNQUOTEDIDENTIFIER,
           value: identifier,
-          start,
         });
       } else if (constants.basicTokens[stream[this._current]] !== undefined) {
         tokens.push({
+          start: this._current,
           type: constants.basicTokens[stream[this._current]],
           value: stream[this._current],
-          start: this._current,
         });
         this._current++;
       } else if (helpers.isNum(stream[this._current])) {
-        token = this._consumeNumber(stream);
-        tokens.push(token);
+        tokens.push(this._consumeNumber(stream));
       } else if (stream[this._current] === '/') {
         tokens.push(this._consumeForwardSlash(stream));
       } else if (stream[this._current] === '$') {
@@ -38,31 +36,30 @@ export class Lexer {
       } else if (stream[this._current] === '[') {
         // No need to increment this._current.  This happens
         // in _consumeLBracket
-        token = this._consumeLBracket(stream);
-        tokens.push(token);
+        tokens.push(this._consumeLBracket(stream));
       } else if (stream[this._current] === '"') {
         start = this._current;
         identifier = this._consumeQuotedIdentifier(stream);
         tokens.push({
+          start,
           type: TokenType.QUOTEDIDENTIFIER,
           value: identifier,
-          start,
         });
       } else if (stream[this._current] === "'") {
         start = this._current;
         identifier = this._consumeRawStringLiteral(stream);
         tokens.push({
+          start,
           type: TokenType.LITERAL,
           value: identifier,
-          start,
         });
       } else if (stream[this._current] === '`') {
         start = this._current;
         const literal = this._consumeLiteral(stream);
         tokens.push({
+          start,
           type: TokenType.LITERAL,
           value: literal,
-          start,
         });
       } else if (constants.operatorStartToken[stream[this._current]] !== undefined) {
         const token = this._consumeOperator(stream);
@@ -114,7 +111,6 @@ export class Lexer {
     this._current++;
     let expression = '';
     let flags;
-    console.log(stream);
     while (stream[this._current] !== '/' && this._current < maxLength) {
       expression += stream[this._current];
       if (stream[this._current] === '\\' && stream[this._current + 1] === '/') {
@@ -150,7 +146,7 @@ export class Lexer {
       error.name = 'LexerError';
       throw error;
     }
-    return { type: TokenType.SCOPE, value, start };
+    return { start, value, type: TokenType.SCOPE };
   }
 
   private _consumeQuotedIdentifier(stream: string): string {
@@ -197,7 +193,7 @@ export class Lexer {
     while (helpers.isNum(stream[this._current]) && this._current < maxLength) {
       this._current++;
     }
-    const value = parseInt(stream.slice(start, this._current));
+    const value = parseInt(stream.slice(start, this._current), 10);
     return { type: TokenType.NUMBER, value, start };
   }
 

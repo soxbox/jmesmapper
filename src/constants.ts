@@ -49,29 +49,29 @@ export const TYPE_NAME_TABLE: IStringObject = {
 // below.
 
 export const basicTokens: IStringObject = {
-  '.': TokenType.DOT,
-  '*': TokenType.STAR,
   ',': TokenType.COMMA,
   ':': TokenType.COLON,
-  '{': TokenType.LBRACE,
-  '}': TokenType.RBRACE,
-  ']': TokenType.RBRACKET,
+  '.': TokenType.DOT,
   '(': TokenType.LPAREN,
   ')': TokenType.RPAREN,
+  ']': TokenType.RBRACKET,
+  '{': TokenType.LBRACE,
+  '}': TokenType.RBRACE,
   '@': TokenType.CURRENT,
+  '*': TokenType.STAR
 };
 
 export const operatorStartToken: IBooleanObject = {
-  '<': true,
-  '>': true,
-  '=': true,
   '!': true,
+  '<': true,
+  '=': true,
+  '>': true
 };
 
 export const skipChars: IBooleanObject = {
-  ' ': true,
   '\t': true,
   '\n': true,
+  ' ': true
 };
 
 export const bindingPower: INumberObject = {

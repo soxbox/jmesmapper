@@ -4,9 +4,9 @@ import * as constants from '../constants';
 import { IAst, IFunctionTable } from '../types';
 
 export function letFunction(runtime: Runtime, resolvedArgs: IAst[]): any {
-  var scope = resolvedArgs[0];
-  var exprefNode = resolvedArgs[1];
-  var interpreter = runtime.getInterpreter();
+  const scope = resolvedArgs[0];
+  const exprefNode = resolvedArgs[1];
+  const interpreter = runtime.getInterpreter();
   if (exprefNode.jmespathType !== 'Expref') {
     throw new Error('TypeError: expected ExpreRef, received ' + exprefNode.type);
   }

@@ -6,7 +6,7 @@ import * as helpers from './helpers';
 import { IFunctionTable } from './types';
 export * as constants from './constants';
 
-interface searchOptions {
+interface SearchOptions {
   definition?: IFunctionTable;
 }
 
@@ -20,7 +20,7 @@ export function tokenize(stream: string) {
   return lexer.tokenize(stream);
 }
 
-export function search(data: any, expression: string, options?: searchOptions) {
+export function search(data: any, expression: string, options?: SearchOptions) {
   const parser = new Parser();
   // This needs to be improved.  Both the interpreter and runtime depend on
   // each other.  The runtime needs the interpreter to support exprefs.

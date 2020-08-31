@@ -38,7 +38,16 @@ export function dateFormat(
   return null;
 }
 
+function dateCurrent(_runtime: Runtime, resolvedArgs: any[]): Date {
+    console.log('hit')
+  return DateTime.utc().toJSDate();
+}
+
 export const definition: IFunctionTable = {
+  now: {
+    _func: dateCurrent,
+    _signature: [],
+  },
   date_parse: {
     _func: dateParse,
     _signature: [

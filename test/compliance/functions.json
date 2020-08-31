@@ -2369,6 +2369,10 @@
       {
         "expression": "date_format(date_parse(date1, 'LLL dd yyyy'), 'yyyy-MM-dd')",
         "result": "1982-05-25"
+      },
+      {
+        "expression": "is_date(now())",
+        "result": true
       }
     ]
   }

@@ -130,7 +130,7 @@ export class Runtime {
     // a minimum number of args to be required.  Otherwise it has to
     // be an exact amount.
     let pluralized;
-    if (signature[signature.length - 1].variadic) {
+    if (signature.length > 0 && signature[signature.length - 1].variadic) {
       if (args.length < signature.length) {
         pluralized = signature.length === 1 ? ' argument' : ' arguments';
         throw new Error(
@@ -144,7 +144,7 @@ export class Runtime {
             args.length
         );
       }
-    } else if (signature[signature.length - 1].optional) {
+    } else if (signature.length > 0 && signature[signature.length - 1].optional) {
       if (args.length < signature.length - 1) {
         pluralized = signature.length === 1 ? ' argument' : ' arguments';
         throw new Error(

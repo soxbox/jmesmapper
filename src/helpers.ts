@@ -120,8 +120,8 @@ export function merge(a: ObjectType, b: ObjectType): ObjectType {
 const trimLeftBuiltIn = !!String.prototype.trimLeft;
 
 export function trimLeft(str: string): string {
-// @ts-ignore
-return trimLeftBuiltIn ? str.trimLeft() : (str.match(/^\s*(.*)/) || [])[1];
+  // @ts-ignore
+  return trimLeftBuiltIn ? str.trimLeft() : (str.match(/^\s*(.*)/) || [])[1];
 }
 
 export function isAlpha(ch: string): boolean {
@@ -132,10 +132,5 @@ export function isNum(ch: string): boolean {
   return (ch >= '0' && ch <= '9') || ch === '-';
 }
 export function isAlphaNum(ch: string): boolean {
-  return (
-    (ch >= 'a' && ch <= 'z') ||
-    (ch >= 'A' && ch <= 'Z') ||
-    (ch >= '0' && ch <= '9') ||
-    ch === '_'
-  );
+  return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch === '_';
 }

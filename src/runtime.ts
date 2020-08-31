@@ -8,12 +8,12 @@ import * as arrayFunctions from './functions/array-functions';
 import * as stringFunctions from './functions/string-functions';
 import * as objectFunctions from './functions/object-functions';
 import * as typeFunctions from './functions/type-functions';
-import * as dateFunctions from "./functions/date-functions";
+import * as dateFunctions from './functions/date-functions';
 import * as conditionalFunctions from './functions/conditional-functions';
 import { IAst, TokenType, IFunctionSignature, IFunctionTable } from './types';
 
 interface IRuntimeOptions {
-  definition?: IFunctionTable
+  definition?: IFunctionTable;
 }
 
 export class Runtime {
@@ -78,7 +78,7 @@ export class Runtime {
             signature.length +
             pluralized +
             ' but received ' +
-            args.length
+            args.length,
         );
       }
     } else if (signature.length > 0 && signature[signature.length - 1].optional) {
@@ -92,20 +92,13 @@ export class Runtime {
             (signature.length - 1) +
             pluralized +
             ' but received ' +
-            args.length
+            args.length,
         );
       }
     } else if (args.length !== signature.length) {
       pluralized = signature.length === 1 ? ' argument' : ' arguments';
       throw new Error(
-        'ArgumentError: ' +
-          name +
-          '() ' +
-          'takes ' +
-          signature.length +
-          pluralized +
-          ' but received ' +
-          args.length
+        'ArgumentError: ' + name + '() ' + 'takes ' + signature.length + pluralized + ' but received ' + args.length,
       );
     }
     for (let i = 0; i < signature.length; i++) {
@@ -119,11 +112,7 @@ export class Runtime {
         }
       }
       // supports one optional type at the end of the arguments
-      if (
-        typeMatched == false &&
-        signature[i].optional &&
-        i === signature.length - 1
-      ) {
+      if (typeMatched == false && signature[i].optional && i === signature.length - 1) {
         if (signature.length > args.length) {
           typeMatched = true;
         }
@@ -143,19 +132,14 @@ export class Runtime {
             ' to be type ' +
             expected +
             ' but received type ' +
-            (actualType !== undefined &&
-              constants.TYPE_NAME_TABLE[actualType]) +
-            ' instead.'
+            (actualType !== undefined && constants.TYPE_NAME_TABLE[actualType]) +
+            ' instead.',
         );
       }
     }
   }
 
-  _typeMatches(
-    actual: number | undefined,
-    expected: number | undefined,
-    argValue: any
-  ): boolean {
+  _typeMatches(actual: number | undefined, expected: number | undefined, argValue: any): boolean {
     if (expected === constants.TYPE_ANY) {
       return true;
     }
@@ -186,13 +170,7 @@ export class Runtime {
           subtype = constants.TYPE_OBJECT;
         }
         for (let i = 0; i < argValue.length; i++) {
-          if (
-            !this._typeMatches(
-              this._getTypeName(argValue[i]),
-              subtype,
-              argValue[i]
-            )
-          ) {
+          if (!this._typeMatches(this._getTypeName(argValue[i]), subtype, argValue[i])) {
             return false;
           }
         }
@@ -214,7 +192,7 @@ export class Runtime {
         return constants.TYPE_BOOLEAN;
       case '[object Null]':
         return constants.TYPE_NULL;
-      case '[object Date]': 
+      case '[object Date]':
         return constants.TYPE_DATE;
       case '[object RegExp]':
         return constants.TYPE_REGEXP;
@@ -236,8 +214,7 @@ export class Runtime {
       const current = interpreter.visit(exprefNode, x);
       const type = that._getTypeName(current);
       if (allowedTypes.indexOf(type) < 0) {
-        const msg =
-          'TypeError: expected one of ' + allowedTypes + ', received ' + type;
+        const msg = 'TypeError: expected one of ' + allowedTypes + ', received ' + type;
         throw new Error(msg);
       }
       return current;

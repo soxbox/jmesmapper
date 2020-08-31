@@ -8,9 +8,7 @@ export function letFunction(runtime: Runtime, resolvedArgs: IAst[]): any {
   var exprefNode = resolvedArgs[1];
   var interpreter = runtime.getInterpreter();
   if (exprefNode.jmespathType !== 'Expref') {
-    throw new Error(
-      'TypeError: expected ExpreRef, received ' + exprefNode.type
-    );
+    throw new Error('TypeError: expected ExpreRef, received ' + exprefNode.type);
   }
   interpreter.scopeChain.pushScope(scope);
   try {
@@ -53,14 +51,11 @@ export function caseFunction(runtime: Runtime, resolvedArgs: any[]): any {
         throw new Error(
           'TypeError: expected ' +
             constants.TYPE_NAME_TABLE[constants.TYPE_ARRAY_EXPREF] +
-            ' to have 2 elements For case conditions'
+            ' to have 2 elements For case conditions',
         );
       }
       if (interpreter.visit(resolvedArgs[i][0], resolvedArgs[i][0].context)) {
-        return interpreter.visit(
-          resolvedArgs[i][1],
-          resolvedArgs[i][0].context
-        );
+        return interpreter.visit(resolvedArgs[i][1], resolvedArgs[i][0].context);
       }
     } else {
       return interpreter.visit(resolvedArgs[i], resolvedArgs[i].context);

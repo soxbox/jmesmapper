@@ -23,10 +23,7 @@ export function dateParse(_runtime: Runtime, resolvedArgs: any[]): Date | null {
   return null;
 }
 
-export function dateFormat(
-  _runtime: Runtime,
-  resolvedArgs: any[]
-): string | null {
+export function dateFormat(_runtime: Runtime, resolvedArgs: any[]): string | null {
   const date = resolvedArgs[0];
   const format = resolvedArgs[1];
   if (date) {
@@ -39,7 +36,7 @@ export function dateFormat(
 }
 
 function dateCurrent(_runtime: Runtime, resolvedArgs: any[]): Date {
-    console.log('hit')
+  console.log('hit');
   return DateTime.utc().toJSDate();
 }
 

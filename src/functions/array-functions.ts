@@ -85,10 +85,7 @@ export function findLastIndex(runtime: Runtime, resolvedArgs: any[]): any {
 export function maxBy(runtime: Runtime, resolvedArgs: any[]): any {
   const exprefNode = resolvedArgs[1];
   const resolvedArray = resolvedArgs[0];
-  const keyFunction = runtime.createKeyFunction(exprefNode, [
-    constants.TYPE_NUMBER,
-    constants.TYPE_STRING,
-  ]);
+  const keyFunction = runtime.createKeyFunction(exprefNode, [constants.TYPE_NUMBER, constants.TYPE_STRING]);
   let maxNumber = -Infinity;
   let maxRecord;
   for (let i = 0; i < resolvedArray.length; i++) {
@@ -120,10 +117,7 @@ export function reverse(runtime: Runtime, resolvedArgs: any[]): any[] | string {
 export function minBy(runtime: Runtime, resolvedArgs: any[]): any {
   const exprefNode = resolvedArgs[1];
   const resolvedArray = resolvedArgs[0];
-  const keyFunction = runtime.createKeyFunction(exprefNode, [
-    constants.TYPE_NUMBER,
-    constants.TYPE_STRING,
-  ]);
+  const keyFunction = runtime.createKeyFunction(exprefNode, [constants.TYPE_NUMBER, constants.TYPE_STRING]);
   let minNumber = Infinity;
   let minRecord;
   for (let i = 0; i < resolvedArray.length; i++) {
@@ -163,9 +157,7 @@ export function sortBy(runtime: Runtime, resolvedArgs: any[]): any[] {
   }
   const interpreter = runtime.getInterpreter();
   const exprefNode = resolvedArgs[1];
-  const requiredType = runtime._getTypeName(
-    interpreter.visit(exprefNode, sortedArray[0])
-  );
+  const requiredType = runtime._getTypeName(interpreter.visit(exprefNode, sortedArray[0]));
   if (
     // @ts-ignore
     [constants.TYPE_NUMBER, constants.TYPE_STRING].indexOf(requiredType) < 0
@@ -188,19 +180,9 @@ export function sortBy(runtime: Runtime, resolvedArgs: any[]): any[] {
     const exprA = interpreter.visit(exprefNode, a[1]);
     const exprB = interpreter.visit(exprefNode, b[1]);
     if (runtime._getTypeName(exprA) !== requiredType) {
-      throw new Error(
-        'TypeError: expected ' +
-          requiredType +
-          ', received ' +
-          runtime._getTypeName(exprA)
-      );
+      throw new Error('TypeError: expected ' + requiredType + ', received ' + runtime._getTypeName(exprA));
     } else if (runtime._getTypeName(exprB) !== requiredType) {
-      throw new Error(
-        'TypeError: expected ' +
-          requiredType +
-          ', received ' +
-          runtime._getTypeName(exprB)
-      );
+      throw new Error('TypeError: expected ' + requiredType + ', received ' + runtime._getTypeName(exprB));
     }
     if (exprA > exprB) {
       return 1;
@@ -227,9 +209,7 @@ export function groupBy(runtime: Runtime, resolvedArgs: any[]): any {
   }
   const interpreter = runtime.getInterpreter();
   const exprefNode = resolvedArgs[1];
-  const requiredType = runtime._getTypeName(
-    interpreter.visit(exprefNode, items[0])
-  );
+  const requiredType = runtime._getTypeName(interpreter.visit(exprefNode, items[0]));
   if (
     // @ts-ignore
     [constants.TYPE_NUMBER, constants.TYPE_STRING].indexOf(requiredType) < 0
@@ -237,17 +217,14 @@ export function groupBy(runtime: Runtime, resolvedArgs: any[]): any {
     throw new Error('TypeError');
   }
 
-  return items.reduce(
-    (out: { [key: string]: any }, item: { [key: string]: any }) => {
-      const value = interpreter.visit(exprefNode, item);
-      if (!Object.prototype.hasOwnProperty.call(out, value)) {
-        out[value] = [];
-      }
-      out[value].push(item);
-      return out;
-    },
-    {}
-  );
+  return items.reduce((out: { [key: string]: any }, item: { [key: string]: any }) => {
+    const value = interpreter.visit(exprefNode, item);
+    if (!Object.prototype.hasOwnProperty.call(out, value)) {
+      out[value] = [];
+    }
+    out[value].push(item);
+    return out;
+  }, {});
 }
 
 export function chunk(_runtime: Runtime, resolvedArgs: any[]): any[][] {
@@ -342,10 +319,7 @@ export const definition: IFunctionTable = {
   },
   every: {
     _func: every,
-    _signature: [
-      { types: [constants.TYPE_ARRAY_OBJECT] },
-      { types: [constants.TYPE_EXPREF] },
-    ],
+    _signature: [{ types: [constants.TYPE_ARRAY_OBJECT] }, { types: [constants.TYPE_EXPREF] }],
   },
   find: {
     _func: find,
@@ -439,11 +413,7 @@ export const definition: IFunctionTable = {
     _func: length,
     _signature: [
       {
-        types: [
-          constants.TYPE_STRING,
-          constants.TYPE_ARRAY,
-          constants.TYPE_OBJECT,
-        ],
+        types: [constants.TYPE_STRING, constants.TYPE_ARRAY, constants.TYPE_OBJECT],
       },
     ],
   },
@@ -490,10 +460,7 @@ export const definition: IFunctionTable = {
   },
   some: {
     _func: some,
-    _signature: [
-      { types: [constants.TYPE_ARRAY_OBJECT] },
-      { types: [constants.TYPE_EXPREF] },
-    ],
+    _signature: [{ types: [constants.TYPE_ARRAY_OBJECT] }, { types: [constants.TYPE_EXPREF] }],
   },
   sort: {
     _func: sort,
@@ -524,9 +491,6 @@ export const definition: IFunctionTable = {
   },
   unique_by: {
     _func: uniqueBy,
-    _signature: [
-      { types: [constants.TYPE_ARRAY] },
-      { types: [constants.TYPE_EXPREF] },
-    ],
+    _signature: [{ types: [constants.TYPE_ARRAY] }, { types: [constants.TYPE_EXPREF] }],
   },
 };

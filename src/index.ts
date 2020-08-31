@@ -7,7 +7,7 @@ import { IFunctionTable } from './types';
 export * as constants from './constants';
 
 interface searchOptions {
-  definition?: IFunctionTable
+  definition?: IFunctionTable;
 }
 
 export function compile(stream: string) {

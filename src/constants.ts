@@ -39,7 +39,7 @@ export const TYPE_NAME_TABLE: IStringObject = {
   8: 'Array<number>',
   9: 'Array<string>',
   10: 'regexp',
-  11: 'Array<expression>'
+  11: 'Array<expression>',
 };
 
 // The "&", "[", "<", ">" tokens

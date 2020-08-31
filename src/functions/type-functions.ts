@@ -3,10 +3,7 @@ import * as constants from '../constants';
 import _ from 'lodash';
 import { IFunctionTable } from '../types';
 
-export function type(
-  runtime: Runtime,
-  resolvedArgs: any[]
-): string | undefined {
+export function type(runtime: Runtime, resolvedArgs: any[]): string | undefined {
   switch (runtime._getTypeName(resolvedArgs[0])) {
     case constants.TYPE_NUMBER:
       return 'number';
@@ -82,16 +79,10 @@ export function isEmpty(_runtime: Runtime, resolvedArgs: any[]): boolean {
   if (typeof value === 'string' && value.trim() === '') {
     return true;
   }
-  if (
-    Object.prototype.toString.call(value) === '[object Array]' &&
-    value.length === 0
-  ) {
+  if (Object.prototype.toString.call(value) === '[object Array]' && value.length === 0) {
     return true;
   }
-  if (
-    Object.prototype.toString.call(value) === '[object Object]' &&
-    Object.keys(value).length === 0
-  ) {
+  if (Object.prototype.toString.call(value) === '[object Object]' && Object.keys(value).length === 0) {
     return true;
   }
   return false;

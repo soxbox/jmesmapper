@@ -2,7 +2,7 @@ import { Runtime } from '../runtime';
 import _ from 'lodash';
 import * as constants from '../constants';
 import { IFunctionTable } from '../types';
-import {v4 as uuidv4} from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 
 export function contains(_runtime: Runtime, resolvedArgs: any[]): boolean {
   return resolvedArgs[0].indexOf(resolvedArgs[1]) >= 0;
@@ -95,194 +95,251 @@ export function repeat(_runtime: Runtime, resolvedArgs: any[]): string {
 }
 
 export function truncate(_runtime: Runtime, resolvedArgs: any[]): string {
-  const options = _.pick(resolvedArgs[1] || {}, [
-    'length',
-    'omission',
-    'separator',
-  ]);
+  const options = _.pick(resolvedArgs[1] || {}, ['length', 'omission', 'separator']);
 
   return _.truncate(resolvedArgs[0], options);
 }
 
 export function uuid(_runtime: Runtime, resolvedArgs: any[]): string {
-  return uuidv4()
+  return uuidv4();
 }
 
 export const definition: IFunctionTable = {
   camel_case: {
     _func: camelCase,
-    _signature: [{
-      types: [constants.TYPE_STRING]
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_STRING],
+      },
+    ],
   },
   contains: {
     _func: contains,
-    _signature: [{
-      types: [constants.TYPE_STRING, constants.TYPE_ARRAY]
-    }, {
-      types: [constants.TYPE_ANY]
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_STRING, constants.TYPE_ARRAY],
+      },
+      {
+        types: [constants.TYPE_ANY],
+      },
+    ],
   },
   ends_with: {
     _func: endsWith,
-    _signature: [{
-      types: [constants.TYPE_STRING]
-    }, {
-      types: [constants.TYPE_STRING]
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_STRING],
+      },
+      {
+        types: [constants.TYPE_STRING],
+      },
+    ],
   },
   escape: {
     _func: escape,
-    _signature: [{
-      types: [constants.TYPE_STRING]
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_STRING],
+      },
+    ],
   },
   kebab_case: {
     _func: kebabCase,
-    _signature: [{
-      types: [constants.TYPE_STRING]
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_STRING],
+      },
+    ],
   },
   lower: {
     _func: lower,
-    _signature: [{
-      types: [constants.TYPE_STRING]
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_STRING],
+      },
+    ],
   },
   pad: {
     _func: pad,
-    _signature: [{
-      types: [constants.TYPE_STRING]
-    }, {
-      types: [constants.TYPE_NUMBER]
-    }, {
-      optional: true,
-      types: [constants.TYPE_STRING]
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_STRING],
+      },
+      {
+        types: [constants.TYPE_NUMBER],
+      },
+      {
+        optional: true,
+        types: [constants.TYPE_STRING],
+      },
+    ],
   },
   pad_end: {
     _func: padEnd,
-    _signature: [{
-      types: [constants.TYPE_STRING]
-    }, {
-      types: [constants.TYPE_NUMBER]
-    }, {
-      optional: true,
-      types: [constants.TYPE_STRING]
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_STRING],
+      },
+      {
+        types: [constants.TYPE_NUMBER],
+      },
+      {
+        optional: true,
+        types: [constants.TYPE_STRING],
+      },
+    ],
   },
   pad_start: {
     _func: padStart,
-    _signature: [{
-      types: [constants.TYPE_STRING]
-    }, {
-      types: [constants.TYPE_NUMBER]
-    }, {
-      optional: true,
-      types: [constants.TYPE_STRING]
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_STRING],
+      },
+      {
+        types: [constants.TYPE_NUMBER],
+      },
+      {
+        optional: true,
+        types: [constants.TYPE_STRING],
+      },
+    ],
   },
   repeat: {
     _func: repeat,
-    _signature: [{
-      types: [constants.TYPE_STRING]
-    }, {
-      types: [constants.TYPE_NUMBER]
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_STRING],
+      },
+      {
+        types: [constants.TYPE_NUMBER],
+      },
+    ],
   },
   replace: {
     _func: replace,
-    _signature: [{
-      types: [constants.TYPE_STRING]
-    }, {
-      types: [constants.TYPE_STRING, constants.TYPE_REGEXP]
-    }, {
-      types: [constants.TYPE_STRING]
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_STRING],
+      },
+      {
+        types: [constants.TYPE_STRING, constants.TYPE_REGEXP],
+      },
+      {
+        types: [constants.TYPE_STRING],
+      },
+    ],
   },
   sname_case: {
     _func: snameCase,
-    _signature: [{
-      types: [constants.TYPE_STRING]
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_STRING],
+      },
+    ],
   },
   split: {
     _func: split,
-    _signature: [{
-      types: [constants.TYPE_STRING]
-    }, {
-      types: [constants.TYPE_STRING, constants.TYPE_REGEXP]
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_STRING],
+      },
+      {
+        types: [constants.TYPE_STRING, constants.TYPE_REGEXP],
+      },
+    ],
   },
   starts_with: {
     _func: startsWith,
-    _signature: [{
-      types: [constants.TYPE_STRING]
-    }, {
-      types: [constants.TYPE_STRING]
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_STRING],
+      },
+      {
+        types: [constants.TYPE_STRING],
+      },
+    ],
   },
   substr: {
     _func: substr,
-    _signature: [{
-      types: [constants.TYPE_STRING]
-    }, {
-      types: [constants.TYPE_NUMBER]
-    }, {
-      optional: true,
-      types: [constants.TYPE_NUMBER]
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_STRING],
+      },
+      {
+        types: [constants.TYPE_NUMBER],
+      },
+      {
+        optional: true,
+        types: [constants.TYPE_NUMBER],
+      },
+    ],
   },
   to_string: {
     _func: toString,
-    _signature: [{
-      types: [constants.TYPE_ANY]
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_ANY],
+      },
+    ],
   },
   trim: {
     _func: trim,
-    _signature: [{
-      types: [constants.TYPE_STRING]
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_STRING],
+      },
+    ],
   },
   truncate: {
     _func: truncate,
-    _signature: [{
-      types: [constants.TYPE_STRING]
-    }, {
-      types: [constants.TYPE_OBJECT],
-      optional: true
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_STRING],
+      },
+      {
+        types: [constants.TYPE_OBJECT],
+        optional: true,
+      },
+    ],
   },
   unescape: {
     _func: unescape,
-    _signature: [{
-      types: [constants.TYPE_STRING]
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_STRING],
+      },
+    ],
   },
   upper: {
     _func: upper,
-    _signature: [{
-      types: [constants.TYPE_STRING]
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_STRING],
+      },
+    ],
   },
   upper_first: {
     _func: upperFirst,
-    _signature: [{
-      types: [constants.TYPE_STRING]
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_STRING],
+      },
+    ],
   },
   uuid: {
     _func: uuid,
-    _signature: []
+    _signature: [],
   },
   words: {
     _func: words,
-    _signature: [{
-      types: [constants.TYPE_STRING]
-    }, {
-      optional: true,
-      types: [constants.TYPE_STRING, constants.TYPE_REGEXP]
-    }]
-  }
+    _signature: [
+      {
+        types: [constants.TYPE_STRING],
+      },
+      {
+        optional: true,
+        types: [constants.TYPE_STRING, constants.TYPE_REGEXP],
+      },
+    ],
+  },
 };

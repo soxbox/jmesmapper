@@ -64,9 +64,7 @@ export class Lexer {
           value: literal,
           start,
         });
-      } else if (
-        constants.operatorStartToken[stream[this._current]] !== undefined
-      ) {
+      } else if (constants.operatorStartToken[stream[this._current]] !== undefined) {
         const token = this._consumeOperator(stream);
         if (token) {
           tokens.push(token);
@@ -104,22 +102,19 @@ export class Lexer {
   private _consumeUnquotedIdentifier(stream: string): string {
     const start = this._current;
     this._current++;
-    while (
-      this._current < stream.length &&
-      helpers.isAlphaNum(stream[this._current])
-    ) {
+    while (this._current < stream.length && helpers.isAlphaNum(stream[this._current])) {
       this._current++;
     }
     return stream.slice(start, this._current);
   }
-  
+
   private _consumeForwardSlash(stream: string): IToken {
     const start = this._current;
     const maxLength = stream.length;
     this._current++;
     let expression = '';
     let flags;
-    console.log(stream)
+    console.log(stream);
     while (stream[this._current] !== '/' && this._current < maxLength) {
       expression += stream[this._current];
       if (stream[this._current] === '\\' && stream[this._current + 1] === '/') {
@@ -137,9 +132,9 @@ export class Lexer {
       type: TokenType.REGULAREXPRESSION,
       value: {
         expression,
-        flags
-      }
-    }
+        flags,
+      },
+    };
   }
 
   private _consumeScope(stream: string): IToken {
@@ -165,10 +160,7 @@ export class Lexer {
     while (stream[this._current] !== '"' && this._current < maxLength) {
       // You can escape a double quote and you can escape an escape.
       let current = this._current;
-      if (
-        stream[current] === '\\' &&
-        (stream[current + 1] === '\\' || stream[current + 1] === '"')
-      ) {
+      if (stream[current] === '\\' && (stream[current + 1] === '\\' || stream[current + 1] === '"')) {
         current += 2;
       } else {
         current++;
@@ -186,10 +178,7 @@ export class Lexer {
     while (stream[this._current] !== "'" && this._current < maxLength) {
       // You can escape a single quote and you can escape an escape.
       let current = this._current;
-      if (
-        stream[current] === '\\' &&
-        (stream[current + 1] === '\\' || stream[current + 1] === "'")
-      ) {
+      if (stream[current] === '\\' && (stream[current + 1] === '\\' || stream[current + 1] === "'")) {
         current += 2;
       } else {
         current++;
@@ -267,10 +256,7 @@ export class Lexer {
     while (stream[this._current] !== '`' && this._current < maxLength) {
       // You can escape a literal char or you can escape the escape.
       let current = this._current;
-      if (
-        stream[current] === '\\' &&
-        (stream[current + 1] === '\\' || stream[current + 1] === '`')
-      ) {
+      if (stream[current] === '\\' && (stream[current + 1] === '\\' || stream[current + 1] === '`')) {
         current += 2;
       } else {
         current++;

@@ -14,9 +14,7 @@ export class Parser {
     const ast = this.expression(0);
     if (this._lookahead(0) !== TokenType.EOF) {
       const t = this._lookaheadToken(0);
-      const error = new Error(
-        'Unexpected token type: ' + t.type + ', value: ' + t.value
-      );
+      const error = new Error('Unexpected token type: ' + t.type + ', value: ' + t.value);
       error.name = 'ParserError';
       throw error;
     }
@@ -107,16 +105,10 @@ export class Parser {
         return { type: AstTypes.PROJECTION, children: [left, right] };
       }
       case TokenType.LBRACKET:
-        if (
-          this._lookahead(0) === TokenType.NUMBER ||
-          this._lookahead(0) === TokenType.COLON
-        ) {
+        if (this._lookahead(0) === TokenType.NUMBER || this._lookahead(0) === TokenType.COLON) {
           const right = this._parseIndexExpression();
           return this._projectIfSlice({ type: AstTypes.IDENTITY }, right);
-        } else if (
-          this._lookahead(0) === TokenType.STAR &&
-          this._lookahead(1) === TokenType.RBRACKET
-        ) {
+        } else if (this._lookahead(0) === TokenType.STAR && this._lookahead(1) === TokenType.RBRACKET) {
           this._advance();
           this._advance();
           const right = this._parseProjectionRHS(constants.bindingPower.Star);
@@ -216,9 +208,7 @@ export class Parser {
         };
       case TokenType.FLATTEN:
         const leftNode: IAst = { type: AstTypes.FLATTEN, children: [left] };
-        const rightNode = this._parseProjectionRHS(
-          constants.bindingPower.Flatten
-        );
+        const rightNode = this._parseProjectionRHS(constants.bindingPower.Flatten);
         return { type: AstTypes.PROJECTION, children: [leftNode, rightNode] };
       case TokenType.EQ:
       case TokenType.NE:
@@ -236,10 +226,7 @@ export class Parser {
         this._match(TokenType.RBRACKET);
         return {
           type: AstTypes.PROJECTION,
-          children: [
-            left,
-            this._parseProjectionRHS(constants.bindingPower.Star),
-          ],
+          children: [left, this._parseProjectionRHS(constants.bindingPower.Star)],
         };
       default:
         throw this._errorToken(this._lookaheadToken(0));
@@ -258,18 +245,13 @@ export class Parser {
   }
 
   _errorToken(token: IToken): Error {
-    const error = new Error(
-      'Invalid token (' + token.type + '): "' + token.value + '"'
-    );
+    const error = new Error('Invalid token (' + token.type + '): "' + token.value + '"');
     error.name = 'ParserError';
     return error;
   }
 
   _parseIndexExpression(): IAst {
-    if (
-      this._lookahead(0) === TokenType.COLON ||
-      this._lookahead(1) === TokenType.COLON
-    ) {
+    if (this._lookahead(0) === TokenType.COLON || this._lookahead(1) === TokenType.COLON) {
       return this._parseSliceExpression();
     } else {
       const node: IAst = {
@@ -290,10 +272,7 @@ export class Parser {
     if (right.type === 'Slice') {
       return {
         type: AstTypes.PROJECTION,
-        children: [
-          indexExpr,
-          this._parseProjectionRHS(constants.bindingPower.Star),
-        ],
+        children: [indexExpr, this._parseProjectionRHS(constants.bindingPower.Star)],
       };
     } else {
       return indexExpr;
@@ -315,9 +294,7 @@ export class Parser {
         this._advance();
       } else {
         const t = this._lookaheadToken(0);
-        const error = new Error(
-          'Syntax error, unexpected token: ' + t.value + '(' + t.type + ')'
-        );
+        const error = new Error('Syntax error, unexpected token: ' + t.value + '(' + t.type + ')');
         error.name = 'Parsererror';
         throw error;
       }
@@ -370,9 +347,7 @@ export class Parser {
       return this._parseDotRHS(rbp);
     } else {
       const t = this._lookaheadToken(0);
-      const error = new Error(
-        'Syntax error, unexpected token: ' + t.value + '(' + t.type + ')'
-      );
+      const error = new Error('Syntax error, unexpected token: ' + t.value + '(' + t.type + ')');
       error.name = 'ParserError';
       throw error;
     }
@@ -396,10 +371,7 @@ export class Parser {
 
   _parseMultiselectHash(): IAst {
     const pairs: KeyValuePairType[] = [];
-    const identifierTypes: string[] = [
-      TokenType.UNQUOTEDIDENTIFIER,
-      TokenType.QUOTEDIDENTIFIER,
-    ];
+    const identifierTypes: string[] = [TokenType.UNQUOTEDIDENTIFIER, TokenType.QUOTEDIDENTIFIER];
     for (;;) {
       const keyToken = this._lookaheadToken(0);
       if (identifierTypes.indexOf(keyToken.type) < 0) {

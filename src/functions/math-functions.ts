@@ -68,84 +68,113 @@ export function inRange(_runtime: Runtime, resolvedArgs: any[]): boolean {
 export const definition: IFunctionTable = {
   abs: {
     _func: abs,
-    _signature: [{
-      types: [constants.TYPE_NUMBER]
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_NUMBER],
+      },
+    ],
   },
   add: {
     _func: add,
-    _signature: [{
-      types: [constants.TYPE_NUMBER]
-    }, {
-      types: [constants.TYPE_NUMBER]
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_NUMBER],
+      },
+      {
+        types: [constants.TYPE_NUMBER],
+      },
+    ],
   },
   avg: {
     _func: avg,
-    _signature: [{
-      types: [constants.TYPE_ARRAY_NUMBER]
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_ARRAY_NUMBER],
+      },
+    ],
   },
   ceil: {
     _func: ceil,
-    _signature: [{
-      types: [constants.TYPE_NUMBER]
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_NUMBER],
+      },
+    ],
   },
   divide: {
     _func: divide,
-    _signature: [{
-      types: [constants.TYPE_NUMBER]
-    }, {
-      types: [constants.TYPE_NUMBER]
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_NUMBER],
+      },
+      {
+        types: [constants.TYPE_NUMBER],
+      },
+    ],
   },
   floor: {
     _func: floor,
-    _signature: [{
-      types: [constants.TYPE_NUMBER]
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_NUMBER],
+      },
+    ],
   },
   in_range: {
     _func: inRange,
-    _signature: [{
-      types: [constants.TYPE_NUMBER]
-    }, {
-      types: [constants.TYPE_NUMBER]
-    }, {
-      types: [constants.TYPE_NUMBER],
-      optional: true
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_NUMBER],
+      },
+      {
+        types: [constants.TYPE_NUMBER],
+      },
+      {
+        types: [constants.TYPE_NUMBER],
+        optional: true,
+      },
+    ],
   },
   multiply: {
     _func: multiply,
-    _signature: [{
-      types: [constants.TYPE_NUMBER]
-    }, {
-      types: [constants.TYPE_NUMBER]
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_NUMBER],
+      },
+      {
+        types: [constants.TYPE_NUMBER],
+      },
+    ],
   },
   round: {
     _func: round,
-    _signature: [{
-      types: [constants.TYPE_NUMBER]
-    }, {
-      optional: true,
-      types: [constants.TYPE_NUMBER]
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_NUMBER],
+      },
+      {
+        optional: true,
+        types: [constants.TYPE_NUMBER],
+      },
+    ],
   },
   subtract: {
     _func: subtract,
-    _signature: [{
-      types: [constants.TYPE_NUMBER]
-    }, {
-      types: [constants.TYPE_NUMBER]
-    }]
+    _signature: [
+      {
+        types: [constants.TYPE_NUMBER],
+      },
+      {
+        types: [constants.TYPE_NUMBER],
+      },
+    ],
   },
   sum: {
     _func: sum,
-    _signature: [{
-      types: [constants.TYPE_ARRAY_NUMBER]
-    }]
-  }
+    _signature: [
+      {
+        types: [constants.TYPE_ARRAY_NUMBER],
+      },
+    ],
+  },
 };

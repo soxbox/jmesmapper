@@ -1,6 +1,5 @@
-
 interface IObject {
-    [key: string]: any
+  [key: string]: any;
 }
 
 export class ScopeChain {

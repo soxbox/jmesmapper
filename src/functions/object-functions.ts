@@ -3,10 +3,7 @@ import _ from 'lodash';
 import { IFunctionTable } from '../types';
 import * as constants from '../constants';
 
-export function merge(
-  _runtime: Runtime,
-  resolvedArgs: any[]
-): { [key: string]: any } {
+export function merge(_runtime: Runtime, resolvedArgs: any[]): { [key: string]: any } {
   const merged: { [key: string]: any } = {};
   for (let i = 0; i < resolvedArgs.length; i++) {
     const current = resolvedArgs[i];
@@ -33,16 +30,10 @@ export function toEntires(_runtime: Runtime, resolvedArgs: any[]): any {
 }
 
 export function fromEntires(_runtime: Runtime, resolvedArgs: any[]): any {
-  return resolvedArgs[0].reduce(
-    (
-      out: { [key: string]: any },
-      { key, value }: { key: string; value: any }
-    ) => {
-      out[key] = value;
-      return out;
-    },
-    {}
-  );
+  return resolvedArgs[0].reduce((out: { [key: string]: any }, { key, value }: { key: string; value: any }) => {
+    out[key] = value;
+    return out;
+  }, {});
 }
 
 export function keys(_runtime: Runtime, resolvedArgs: any[]): string[] {

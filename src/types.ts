@@ -23,7 +23,7 @@ export enum TokenType {
   EOF = 'EOF',
   UNQUOTEDIDENTIFIER = 'UnquotedIdentifier',
   QUOTEDIDENTIFIER = 'QuotedIdentifier',
-  REGULAREXPRESSION = "RegularExpression",
+  REGULAREXPRESSION = 'RegularExpression',
   RBRACKET = 'Rbracket',
   RPAREN = 'Rparen',
   COMMA = 'Comma',
@@ -77,7 +77,7 @@ export enum AstTypes {
   FLATTEN = 'Flatten',
   PIPE = 'Pipe',
   SCOPE = 'Scope',
-  REGULAREXPRESSION = "RegularExpression",
+  REGULAREXPRESSION = 'RegularExpression',
 }
 
 export type KeyValuePairType = {

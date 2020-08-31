@@ -1,6 +1,6 @@
 /* eslint-disable no-case-declarations */
 import { Runtime } from './runtime';
-import {ScopeChain} from "./scope-chain";
+import { ScopeChain } from './scope-chain';
 import * as helpers from './helpers';
 import { IAst, AstTypes, TokenType } from './types';
 
@@ -257,10 +257,7 @@ export class TreeInterpreter {
     }
   }
 
-  computeSliceParams(
-    arrayLength: number,
-    sliceParams: Array<number | null>
-  ): number[] {
+  computeSliceParams(arrayLength: number, sliceParams: Array<number | null>): number[] {
     let step: number = sliceParams[2] === null ? 1 : sliceParams[2];
 
     if (step === 0) {
@@ -285,14 +282,10 @@ export class TreeInterpreter {
           : arrayLength
         : this.capSliceRange(arrayLength, sliceParams[1], step);
 
-        return [start, stop, step];
+    return [start, stop, step];
   }
 
-  capSliceRange(
-    arrayLength: number,
-    actualValue: number,
-    step: number
-  ): number {
+  capSliceRange(arrayLength: number, actualValue: number, step: number): number {
     let value = actualValue;
     if (value < 0) {
       value += arrayLength;

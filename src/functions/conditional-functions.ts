@@ -1,7 +1,7 @@
 import { Runtime } from '../runtime';
 import * as helpers from '../helpers';
 import * as constants from '../constants';
-import { IAst } from '../types';
+import { IAst, IFunctionTable } from '../types';
 
 export function letFunction(runtime: Runtime, resolvedArgs: IAst[]): any {
   var scope = resolvedArgs[0];
@@ -68,3 +68,60 @@ export function caseFunction(runtime: Runtime, resolvedArgs: any[]): any {
   }
   return null;
 }
+
+export const definition: IFunctionTable = {
+  case: {
+    _func: caseFunction,
+    _signature: [
+      {
+        types: [constants.TYPE_EXPREF, constants.TYPE_ARRAY_EXPREF],
+        variadic: true,
+      },
+    ],
+  },
+  define: {
+    _func: define,
+    _signature: [
+      {
+        types: [constants.TYPE_STRING],
+      },
+      {
+        types: [constants.TYPE_EXPREF],
+      },
+    ],
+  },
+  if: {
+    _func: ifFunction,
+    _signature: [
+      {
+        types: [constants.TYPE_ANY],
+      },
+      {
+        types: [constants.TYPE_EXPREF],
+      },
+      {
+        optional: true,
+        types: [constants.TYPE_EXPREF],
+      },
+    ],
+  },
+  is_defined: {
+    _func: isDefined,
+    _signature: [
+      {
+        types: [constants.TYPE_STRING],
+      },
+    ],
+  },
+  let: {
+    _func: letFunction,
+    _signature: [
+      {
+        types: [constants.TYPE_OBJECT],
+      },
+      {
+        types: [constants.TYPE_EXPREF],
+      },
+    ],
+  },
+};

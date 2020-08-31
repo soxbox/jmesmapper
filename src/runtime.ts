@@ -25,83 +25,15 @@ export class Runtime {
     this.dynamicFunctions = new FunctionScope();
     this.functionTable = Object.assign(
       {},
-      {
-        // name: [function, <signature>]
-        // The <signature> can be:
-        //
-        // {
-        //   args: [[type1, type2], [type1, type2]],
-        //   variadic: true|false
-        // }
-        //
-        // Each arg in the arg list is a list of valid types
-        // (if the function is overloaded and supports multiple
-        // types.  If the type is "any" then no type checking
-        // occurs on the argument.  Variadic is optional
-        // and if not provided is assumed to be false.
-        let: {
-          _func: conditionalFunctions.letFunction,
-          _signature: [
-            { types: [constants.TYPE_OBJECT] },
-            { types: [constants.TYPE_EXPREF] },
-          ],
-        },
-        max: {
-          _func: numberFunctions.max,
-          _signature: [
-            {
-              types: [constants.TYPE_ARRAY_NUMBER, constants.TYPE_ARRAY_STRING],
-            },
-          ],
-        },
-        case: {
-          _func: conditionalFunctions.caseFunction,
-          _signature: [
-            {
-              types: [constants.TYPE_EXPREF, constants.TYPE_ARRAY_EXPREF],
-              variadic: true,
-            },
-          ],
-        },
-        if: {
-          _func: conditionalFunctions.ifFunction,
-          _signature: [
-            { types: [constants.TYPE_ANY] },
-            { types: [constants.TYPE_EXPREF] },
-            { types: [constants.TYPE_EXPREF], optional: true },
-          ],
-        },
-        define: {
-          _func: conditionalFunctions.define,
-          _signature: [
-            { types: [constants.TYPE_STRING] },
-            { types: [constants.TYPE_EXPREF] },
-          ],
-        },
-        is_defined: {
-          _func: conditionalFunctions.isDefined,
-          _signature: [{ types: [constants.TYPE_STRING] }],
-        },
-        min: {
-          _func: numberFunctions.min,
-          _signature: [
-            {
-              types: [constants.TYPE_ARRAY_NUMBER, constants.TYPE_ARRAY_STRING],
-            },
-          ],
-        },
-        to_number: {
-          _func: numberFunctions.toNumber,
-          _signature: [{ types: [constants.TYPE_ANY] }],
-        },
-      },
       stringFunctions.definition,
       mathFunctions.definition,
       arrayFunctions.definition,
       objectFunctions.definition,
       typeFunctions.definition,
       dateFunctions.definition,
-      options.definition
+      conditionalFunctions.definition,
+      numberFunctions.definition,
+      options.definition,
     );
   }
 

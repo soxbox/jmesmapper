@@ -1,5 +1,6 @@
 import { Runtime } from '../runtime';
 import * as constants from '../constants';
+import { IFunctionTable } from '../types';
 
 export function max(runtime: Runtime, resolvedArgs: any[]): number | null {
   if (resolvedArgs[0].length > 0) {
@@ -54,3 +55,26 @@ export function toNumber(runtime: Runtime, resolvedArgs: any[]): number | null {
   }
   return null;
 }
+
+export const definition: IFunctionTable = {
+  max: {
+    _func: max,
+    _signature: [
+      {
+        types: [constants.TYPE_ARRAY_NUMBER, constants.TYPE_ARRAY_STRING],
+      },
+    ],
+  },
+  min: {
+    _func: min,
+    _signature: [
+      {
+        types: [constants.TYPE_ARRAY_NUMBER, constants.TYPE_ARRAY_STRING],
+      },
+    ],
+  },
+  to_number: {
+    _func: toNumber,
+    _signature: [{ types: [constants.TYPE_ANY] }],
+  },
+};
